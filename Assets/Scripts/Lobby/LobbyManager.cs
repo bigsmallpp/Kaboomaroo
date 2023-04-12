@@ -11,9 +11,10 @@ using UnityEngine;
 public class LobbyManager : MonoBehaviour
 {
 
-    private Lobby _createdLobby;
+    private Lobby _connectedLobby;
     private async void Start()
     {
+        DontDestroyOnLoad(this);
         await UnityServices.InitializeAsync();
 
         AuthenticationService.Instance.SignedIn += SignedIn;
@@ -40,7 +41,7 @@ public class LobbyManager : MonoBehaviour
         
             string lobby_name = "My Cool Lobby";
             int max_players = 4;
-            _createdLobby = await LobbyService.Instance.CreateLobbyAsync(lobby_name, max_players, options);
+            _connectedLobby = await LobbyService.Instance.CreateLobbyAsync(lobby_name, max_players, options);
             StartCoroutine(KeepLobbyAlive());
         }
         catch (LobbyServiceException l)
@@ -72,13 +73,13 @@ public class LobbyManager : MonoBehaviour
         float interval = 20.0f;
         float elapsed_time = 0.0f;
 
-        while (_createdLobby != null)
+        while (_connectedLobby != null)
         {
             elapsed_time += Time.deltaTime;
             if (elapsed_time >= interval)
             {
                 elapsed_time = 0.0f;
-                Task task = LobbyService.Instance.SendHeartbeatPingAsync(_createdLobby.Id);;
+                Task task = LobbyService.Instance.SendHeartbeatPingAsync(_connectedLobby.Id);
                 yield return new WaitUntil(() => task.IsCompleted);
             }
         }
@@ -88,7 +89,13 @@ public class LobbyManager : MonoBehaviour
     {
         try
         {
-            await LobbyService.Instance.JoinLobbyByCodeAsync(code);
+            Lobby joined_lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(code);
+            if (joined_lobby != null)
+            {
+                _connectedLobby = joined_lobby;
+                Debug.Log("Joined lobby: " + _connectedLobby.Name);
+            }
+            
             return "";
         }
         catch (LobbyServiceException l)
@@ -97,5 +104,10 @@ public class LobbyManager : MonoBehaviour
             return l.Message;
             throw;
         }
+    }
+
+    public Lobby GetActiveLobby()
+    {
+        return _connectedLobby;
     }
 }

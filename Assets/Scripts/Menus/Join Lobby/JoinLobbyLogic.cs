@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +30,7 @@ public class JoinLobbyLogic : MonoBehaviour
         string join = await _lobbyManager.JoinLobbyWithCode(code);
         
         // Joined Successfully, no error
-        if (join.Equals(""))
+        if (join.Equals(string.Empty))
         {
             _menuManager.SetupLobbyScreen();
         }

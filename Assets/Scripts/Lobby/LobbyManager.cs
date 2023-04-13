@@ -12,6 +12,14 @@ public class LobbyManager : MonoBehaviour
 {
 
     private Lobby _connectedLobby;
+    
+    [Header("Heartbeat Variables")]
+    [SerializeField] private float _heartbeatElapsedTime = 0.0f;
+    [SerializeField] private float _heartbeatInterval = 20.0f;
+    
+    [Header("Lobby Update Variables")]
+    [SerializeField] private float _lobbyUpdateElapsedTime = 0.0f;
+    [SerializeField] private float _lobbyUpdateInterval = 2.5f;
     private async void Start()
     {
         DontDestroyOnLoad(this);
@@ -20,6 +28,12 @@ public class LobbyManager : MonoBehaviour
         AuthenticationService.Instance.SignedIn += SignedIn;
         AuthenticationService.Instance.SignInFailed += SignInFailed;
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+    private void Update()
+    {
+        KeepLobbyAlive();
+        UpdateLobbyData();
     }
 
     private void SignedIn()
@@ -32,22 +46,22 @@ public class LobbyManager : MonoBehaviour
         Debug.LogError("e");
     }
     
-    private async void CreateLobby()
+    public async Task<string> CreateLobby(string name, int max_players)
     {
         try
         {
             // TODO Read Docs
             CreateLobbyOptions options = new CreateLobbyOptions();
-        
-            string lobby_name = "My Cool Lobby";
-            int max_players = 4;
-            _connectedLobby = await LobbyService.Instance.CreateLobbyAsync(lobby_name, max_players, options);
-            StartCoroutine(KeepLobbyAlive());
+            
+            _connectedLobby = await LobbyService.Instance.CreateLobbyAsync(name, max_players, options);
+            Debug.Log("Created Lobby " + _connectedLobby.Name + " with " + _connectedLobby.MaxPlayers + " max players!");
+            Debug.Log("Lobby Code is " + _connectedLobby.LobbyCode);
+            return string.Empty;
         }
         catch (LobbyServiceException l)
         {
             Debug.LogError(l);
-            throw;
+            return l.Message;
         }
     }
     
@@ -68,19 +82,29 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    IEnumerator KeepLobbyAlive()
+    private async void KeepLobbyAlive()
     {
-        float interval = 20.0f;
-        float elapsed_time = 0.0f;
-
-        while (_connectedLobby != null)
+        if (_connectedLobby != null && IsHost())
         {
-            elapsed_time += Time.deltaTime;
-            if (elapsed_time >= interval)
+            _heartbeatElapsedTime += Time.deltaTime;
+            if (_heartbeatElapsedTime >= _heartbeatInterval)
             {
-                elapsed_time = 0.0f;
-                Task task = LobbyService.Instance.SendHeartbeatPingAsync(_connectedLobby.Id);
-                yield return new WaitUntil(() => task.IsCompleted);
+                _heartbeatElapsedTime = 0.0f;
+                await LobbyService.Instance.SendHeartbeatPingAsync(_connectedLobby.Id);
+            }
+        }
+    }
+
+    private async void UpdateLobbyData()
+    {
+        if (_connectedLobby != null)
+        {
+            _lobbyUpdateElapsedTime += Time.deltaTime;
+            if (_lobbyUpdateElapsedTime >= _lobbyUpdateInterval)
+            {
+                _lobbyUpdateElapsedTime = 0.0f;
+                _connectedLobby = await LobbyService.Instance.GetLobbyAsync(_connectedLobby.Id);
+                ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby);
             }
         }
     }
@@ -96,7 +120,7 @@ public class LobbyManager : MonoBehaviour
                 Debug.Log("Joined lobby: " + _connectedLobby.Name);
             }
             
-            return "";
+            return string.Empty;
         }
         catch (LobbyServiceException l)
         {
@@ -109,5 +133,23 @@ public class LobbyManager : MonoBehaviour
     public Lobby GetActiveLobby()
     {
         return _connectedLobby;
+    }
+
+    public bool IsHost()
+    {
+        return _connectedLobby != null && _connectedLobby.HostId == AuthenticationService.Instance.PlayerId;
+    }
+
+    public async void RemovePlayerFromConnectedLobby()
+    {
+        Debug.Log("Disconnecting Player...");
+        await LobbyService.Instance.RemovePlayerAsync(_connectedLobby.Id, AuthenticationService.Instance.PlayerId);
+        _connectedLobby = null;
+    }
+
+    private void OnDestroy()
+    {
+        // TODO Doesnt work properly
+        RemovePlayerFromConnectedLobby();
     }
 }

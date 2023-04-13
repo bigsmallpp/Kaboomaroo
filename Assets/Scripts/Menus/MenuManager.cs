@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    [SerializeField] private IPManager _networkManager;
+    [SerializeField] private IPManager _ipManager;
     [SerializeField] private MainMenuButtons _menuButtons;
+    [SerializeField] private LobbyUpdaterUI _lobbyUpdaterUI;
     
     [SerializeField] private TextMeshProUGUI _ipText;
 
@@ -28,37 +29,26 @@ public class MenuManager : MonoBehaviour
 
     IEnumerator WaitForInitAndSetIPAddress()
     {
-        while (_networkManager.GetIPStatus() != IPManager.IP_STATUS.SUCCESS)
+        while (_ipManager.GetIPStatus() != IPManager.IP_STATUS.SUCCESS)
         {
             yield return new WaitForSeconds(0.5f);
         }
         
-        _ipText.text = IP + _networkManager.GetIPAddress();
+        _ipText.text = IP + _ipManager.GetIPAddress();
     }
 
     public void SetupLobbyScreen()
     {
-        Lobby active_lobby = ManagerSystems.Instance.GetNetworkingManager().GetLobbyManager().GetActiveLobby();
-
-        foreach (Player player in active_lobby.Players)
-        {
-            // Add player to GridView
-        }
-        
-        // TODO Set LobbyName
-        // LobbyName = active_lobby.Name;
-        
-        // TODO Set Player Count
-        // player_count = active_lobby.Players.Count + "/" + active_lobby.MaxPlayers +" " + Players;
-        
-        // TODO Set Lobby Code
-        // LobbyCode = active_lobby.LobbyCode;
-        
-        _menuButtons.SwitchToLobbyScreenMenu();
+        _menuButtons.SwitchToLobbyScreenMenu(true);
     }
 
     public MainMenuButtons GetMainMenuButtons()
     {
         return _menuButtons;
+    }
+
+    public LobbyUpdaterUI GetLobbyUpdaterUI()
+    {
+        return _lobbyUpdaterUI;
     }
 }

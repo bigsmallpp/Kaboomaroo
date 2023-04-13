@@ -13,6 +13,9 @@ public class MainMenuButtons : MonoBehaviour
     [SerializeField] private GameObject _optionsMenu;
     [SerializeField] private GameObject _lobbyScreen;
     
+    [Header("The connecting screen")]
+    [SerializeField] private GameObject _connectingToLobbyScreen;
+    
     private GameObject _activeMenu;
 
     private void Start()
@@ -53,11 +56,15 @@ public class MainMenuButtons : MonoBehaviour
         _activeMenu = _createLobbyMenu;
     }
     
-    public void SwitchToLobbyScreenMenu()
+    public void SwitchToLobbyScreenMenu(bool connecting_animation)
     {
-        _activeMenu.SetActive(false);
-        _lobbyScreen.SetActive(true);
-        _activeMenu = _lobbyScreen;
+        if (!connecting_animation)
+        {
+            SwitchToLobbyScreenInstant();
+            return;
+        }
+
+        StartCoroutine(PlayConnectingAnimation());
     }
 
     private void HandleBackButtonPress()
@@ -95,5 +102,24 @@ public class MainMenuButtons : MonoBehaviour
         {
             SwitchToMainMenu();
         }
+    }
+
+    private void SwitchToLobbyScreenInstant()
+    {
+        _activeMenu.SetActive(false);
+        _lobbyScreen.SetActive(true);
+        _activeMenu = _lobbyScreen;
+    }
+
+    IEnumerator PlayConnectingAnimation()
+    {
+        _activeMenu.SetActive(false);
+        _connectingToLobbyScreen.SetActive(true);
+        _lobbyScreen.SetActive(true);
+        _activeMenu = _connectingToLobbyScreen;
+        
+        yield return new WaitForSeconds(4.0f);
+        _activeMenu.SetActive(false);
+        _activeMenu = _lobbyScreen;
     }
 }

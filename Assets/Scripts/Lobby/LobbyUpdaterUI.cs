@@ -34,7 +34,6 @@ public class LobbyUpdaterUI : MonoBehaviour
     private void UpdatePlayersInGridView(List<Player> players)
     {
         bool entries_changed = false;
-        Debug.Log(players.Count + " Players In Lobby");
         foreach (Player player in players)
         {
             if (!_lobbyPlayers.ContainsKey(player.Id))
@@ -50,16 +49,27 @@ public class LobbyUpdaterUI : MonoBehaviour
                 // TODO Color selection
             }
         }
-
+        
+        // Remove players that left
         if (_lobbyPlayers.Count > players.Count)
         {
+            entries_changed = true;
+            List<string> keys_to_remove = new List<string>();
+            
+            foreach (KeyValuePair<string, GameObject> lobby_entry in _lobbyPlayers)
+            {
+                keys_to_remove.Add(lobby_entry.Key);
+            }
+            
             foreach (Player player in players)
             {
-                if (_lobbyPlayers.ContainsKey(player.Id))
-                {
-                    Destroy(_lobbyPlayers[player.Id]);
-                    _lobbyPlayers.Remove(player.Id);
-                }
+                keys_to_remove.Remove(player.Id);
+            }
+            
+            foreach (string key in keys_to_remove)
+            {
+                Destroy(_lobbyPlayers[key]);
+                _lobbyPlayers.Remove(key);
             }
         }
 

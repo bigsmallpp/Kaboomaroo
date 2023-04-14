@@ -28,6 +28,7 @@ public class JoinLobbyLogic : MonoBehaviour
         }
         
         string join = await _lobbyManager.JoinLobbyWithCode(code);
+        _lobbyCode.text = "";
         
         // Joined Successfully, no error
         if (join.Equals(string.Empty))

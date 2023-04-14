@@ -20,6 +20,10 @@ public class LobbyManager : MonoBehaviour
     [Header("Lobby Update Variables")]
     [SerializeField] private float _lobbyUpdateElapsedTime = 0.0f;
     [SerializeField] private float _lobbyUpdateInterval = 2.5f;
+
+    [Header("Timeout Variables")]
+    [SerializeField] private float _allowedIdleTime;
+    private bool _applicationInFocusAndNotPaused = true;
     private async void Start()
     {
         DontDestroyOnLoad(this);
@@ -56,11 +60,12 @@ public class LobbyManager : MonoBehaviour
             _connectedLobby = await LobbyService.Instance.CreateLobbyAsync(name, max_players, options);
             Debug.Log("Created Lobby " + _connectedLobby.Name + " with " + _connectedLobby.MaxPlayers + " max players!");
             Debug.Log("Lobby Code is " + _connectedLobby.LobbyCode);
+            InitializePlayerDataInfrictions();
             return string.Empty;
         }
         catch (LobbyServiceException l)
         {
-            Debug.LogError(l);
+            Debug.LogWarning(l);
             return l.Message;
         }
     }
@@ -77,8 +82,7 @@ public class LobbyManager : MonoBehaviour
         }
         catch (LobbyServiceException l)
         {
-            Debug.LogError(l);
-            throw;
+            HandleLobbyServiceException(l);
         }
     }
 
@@ -97,15 +101,23 @@ public class LobbyManager : MonoBehaviour
 
     private async void UpdateLobbyData()
     {
-        if (_connectedLobby != null)
+        try
         {
-            _lobbyUpdateElapsedTime += Time.deltaTime;
-            if (_lobbyUpdateElapsedTime >= _lobbyUpdateInterval)
+            if (_connectedLobby != null)
             {
-                _lobbyUpdateElapsedTime = 0.0f;
-                _connectedLobby = await LobbyService.Instance.GetLobbyAsync(_connectedLobby.Id);
-                ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby);
+                _lobbyUpdateElapsedTime += Time.deltaTime;
+                if (_lobbyUpdateElapsedTime >= _lobbyUpdateInterval)
+                {
+                    _lobbyUpdateElapsedTime = 0.0f;
+                    _connectedLobby = await LobbyService.Instance.GetLobbyAsync(_connectedLobby.Id);
+                    ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby);
+                    SendPlayerheartbeat();
+                }
             }
+        }
+        catch (LobbyServiceException l)
+        {
+            HandleLobbyServiceException(l);
         }
     }
 
@@ -118,15 +130,16 @@ public class LobbyManager : MonoBehaviour
             {
                 _connectedLobby = joined_lobby;
                 Debug.Log("Joined lobby: " + _connectedLobby.Name);
+                
+                InitializePlayerDataInfrictions();
             }
             
             return string.Empty;
         }
         catch (LobbyServiceException l)
         {
-            Debug.LogError(l);
+            Debug.LogWarning(l);
             return l.Message;
-            throw;
         }
     }
 
@@ -143,13 +156,149 @@ public class LobbyManager : MonoBehaviour
     public async void RemovePlayerFromConnectedLobby()
     {
         Debug.Log("Disconnecting Player...");
-        await LobbyService.Instance.RemovePlayerAsync(_connectedLobby.Id, AuthenticationService.Instance.PlayerId);
-        _connectedLobby = null;
+        try
+        {
+            await LobbyService.Instance.RemovePlayerAsync(_connectedLobby.Id, AuthenticationService.Instance.PlayerId);
+            _connectedLobby = null;
+        }
+        catch (LobbyServiceException l)
+        {
+            HandleLobbyServiceException(l);
+        }
     }
 
     private void OnDestroy()
     {
-        // TODO Doesnt work properly
+        // TODO Doesnt work properly on force quit
         RemovePlayerFromConnectedLobby();
+    }
+
+    public void SendPlayerheartbeat()
+    {
+        if (_connectedLobby == null)
+        {
+            return;
+        }
+        
+        // Client and Host reset their last active time
+        HandleIdleInfrictionsClient();
+        
+        // Host checks inactive times and kicks after threshold
+        if (IsHost())
+        {
+            HostCheckInactivePlayers();
+        }
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (Application.platform != RuntimePlatform.Android)
+            return;
+        
+        Debug.Log("Focus of App changed to " + hasFocus);
+        _applicationInFocusAndNotPaused = hasFocus;
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (Application.platform != RuntimePlatform.Android)
+            return;
+        
+        Debug.Log("Pause Status of App changed to " + pauseStatus);
+        _applicationInFocusAndNotPaused = !pauseStatus;
+    }
+
+    private async void InitializePlayerDataInfrictions()
+    {
+        try
+        {
+            UpdatePlayerOptions options = new UpdatePlayerOptions();
+            options.Data = new Dictionary<string, PlayerDataObject>()
+            {
+                {
+                    "LastSeen", new PlayerDataObject(
+                        visibility: PlayerDataObject.VisibilityOptions.Member,
+                        value: DateTime.Now.ToString())
+                }
+            };
+
+            _connectedLobby = await LobbyService.Instance.UpdatePlayerAsync(_connectedLobby.Id, AuthenticationService.Instance.PlayerId, options);
+        }
+        catch (LobbyServiceException l)
+        {
+            HandleLobbyServiceException(l);
+        }
+    }
+
+    private async void HandleIdleInfrictionsClient()
+    {
+        try
+        {
+            if (_applicationInFocusAndNotPaused)
+            {
+                UpdatePlayerOptions options = new UpdatePlayerOptions();
+                options.Data = new Dictionary<string, PlayerDataObject>()
+                {
+                    {
+                        "LastSeen", new PlayerDataObject(
+                            visibility: PlayerDataObject.VisibilityOptions.Member,
+                            value: DateTime.Now.ToString())
+                    }
+                };
+                _connectedLobby = await LobbyService.Instance.UpdatePlayerAsync(_connectedLobby.Id, AuthenticationService.Instance.PlayerId, options);
+            }
+        }
+        catch (LobbyServiceException l)
+        {
+            HandleLobbyServiceException(l);
+        }
+    }
+
+    private async void HostCheckInactivePlayers()
+    {
+        try
+        {
+            foreach (Player player in _connectedLobby.Players)
+            {
+                if (player.Data != null && player.Data.ContainsKey("LastSeen"))
+                {
+                    DateTime last_seen = DateTime.Parse(player.Data["LastSeen"].Value);
+                    float time_diff = (DateTime.Now - last_seen).Seconds;
+                    
+                    Debug.Log("(" + player.Id + ") Time since no response: " + time_diff);
+                    // Kick player if he didn't respond after _allowedIdleTime Seconds
+                    if (time_diff >= _allowedIdleTime)
+                    {
+                        await LobbyService.Instance.RemovePlayerAsync(_connectedLobby.Id, player.Id);
+                    }
+                }
+            }
+        }
+        catch (LobbyServiceException l)
+        {
+            HandleLobbyServiceException(l);
+        }
+    }
+
+    private void HandleLobbyServiceException(LobbyServiceException l)
+    {
+        // You were kicked from the Lobby
+        if (l.Reason == LobbyExceptionReason.PlayerNotFound)
+        {
+            Debug.Log("You were kicked from the session!");
+            _connectedLobby = null;
+            ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SwitchToMainMenu();
+        }
+        else if (l.Reason == LobbyExceptionReason.LobbyNotFound)
+        {
+            Debug.Log("The lobby you tried to access, doesn't exist anymore!");
+            _connectedLobby = null;
+            ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SwitchToMainMenu();
+        }
+        else
+        {
+            Debug.LogError("Unhandled Exception Case!");
+            Debug.LogError(l);
+        }
     }
 }

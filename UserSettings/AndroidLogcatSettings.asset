@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "baf8d5653085",
         "name": "com.DefaultCompany.com.unity.template.mobile2D",
-        "processId": 26445,
+        "processId": 884,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,37 +11,49 @@
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 556,
+            "processId": 17733,
             "exited": true
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 15064,
+            "processId": 21403,
             "exited": true
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 18239,
+            "processId": 23866,
+            "exited": true
+        },
+        {
+            "deviceId": "baf8d5653085",
+            "name": "com.miui.home",
+            "processId": 3118,
+            "exited": false
+        },
+        {
+            "deviceId": "baf8d5653085",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 25875,
             "exited": true
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 20634,
+            "processId": 30105,
             "exited": true
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 22964,
-            "exited": true
+            "processId": 31677,
+            "exited": false
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 26445,
+            "processId": 884,
             "exited": false
         }
     ],

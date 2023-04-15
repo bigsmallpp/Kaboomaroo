@@ -11,6 +11,9 @@ public class LobbyUpdaterUI : MonoBehaviour
     [SerializeField] private GameObject _lobbyPlayerEntryPrefab;
     [SerializeField] private Dictionary<string, GameObject> _lobbyPlayers;
     [SerializeField] private GameObject _lobbyGridView;
+    [SerializeField] private TextMeshProUGUI _lobbyCode;
+
+    private const int LOBBY_CODE_LENGTH = 6;
 
     private void Start()
     {
@@ -27,8 +30,7 @@ public class LobbyUpdaterUI : MonoBehaviour
         // TODO Set Player Count
         // player_count = active_lobby.Players.Count + "/" + active_lobby.MaxPlayers +" " + Players;
         
-        // TODO Set Lobby Code
-        // LobbyCode = active_lobby.LobbyCode;
+        SetLobbyCode(lobby.LobbyCode);
     }
     
     private void UpdatePlayersInGridView(List<Player> players)
@@ -36,14 +38,14 @@ public class LobbyUpdaterUI : MonoBehaviour
         bool entries_changed = false;
         foreach (Player player in players)
         {
-            if (!_lobbyPlayers.ContainsKey(player.Id))
+            if (!_lobbyPlayers.ContainsKey(player.Id) && player.Data != null && player.Data.ContainsKey("Name"))
             {
                 entries_changed = true;
                 GameObject lobby_entry = Instantiate(_lobbyPlayerEntryPrefab, _lobbyGridView.transform);
                 
                 string name_highlight = player.Id == AuthenticationService.Instance.PlayerId ? " (You)" : String.Empty;
                 TextMeshProUGUI[] texts = lobby_entry.GetComponentsInChildren<TextMeshProUGUI>();
-                texts[1].text = "Random text idk" + name_highlight;
+                texts[1].text = player.Data["Name"].Value + name_highlight;
                 
                 _lobbyPlayers.Add(player.Id, lobby_entry);
                 // TODO Color selection
@@ -75,18 +77,30 @@ public class LobbyUpdaterUI : MonoBehaviour
 
         if (entries_changed)
         {
-            UpdatePlayerIndices();
+            UpdatePlayerIndices(players);
         }
     }
 
-    private void UpdatePlayerIndices()
+    private void UpdatePlayerIndices(List<Player> players)
     {
         int index = 1;
-        foreach (KeyValuePair<string, GameObject> lobby_entry in _lobbyPlayers)
+
+        Debug.Log(_lobbyPlayers.Count);
+        foreach (Player player in players)
         {
-            // Should return first TMP in Children
-            lobby_entry.Value.GetComponentInChildren<TextMeshProUGUI>().text = "P" + index.ToString();
+            _lobbyPlayers[player.Id].GetComponentInChildren<TextMeshProUGUI>().text = "P" + index.ToString();
             index++;
+        }
+    }
+
+    private void SetLobbyCode(string code)
+    {
+        string current_code = _lobbyCode.text.Substring(_lobbyCode.text.Length - 6);
+        Debug.Log("Current Code = " + current_code);
+        
+        if (!current_code.Equals(code))
+        {
+            _lobbyCode.text = "Lobby Code: " + code;
         }
     }
 }

@@ -7,6 +7,7 @@ using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -24,6 +25,15 @@ public class LobbyManager : MonoBehaviour
     [Header("Timeout Variables")]
     [SerializeField] private float _allowedIdleTime;
     private bool _applicationInFocusAndNotPaused = true;
+    
+    private List<string> _playerNames = new List<string>()
+    {
+        "Pristine Platypus",
+        "Graceful Gorilla",
+        "Happy Hippo",
+        "Doubtful Doggo",
+        "Amazing Ape"
+    };
     private async void Start()
     {
         DontDestroyOnLoad(this);
@@ -60,7 +70,7 @@ public class LobbyManager : MonoBehaviour
             _connectedLobby = await LobbyService.Instance.CreateLobbyAsync(name, max_players, options);
             Debug.Log("Created Lobby " + _connectedLobby.Name + " with " + _connectedLobby.MaxPlayers + " max players!");
             Debug.Log("Lobby Code is " + _connectedLobby.LobbyCode);
-            InitializePlayerDataInfrictions();
+            InitializePlayerDataInfrictionsAndName();
             return string.Empty;
         }
         catch (LobbyServiceException l)
@@ -131,7 +141,7 @@ public class LobbyManager : MonoBehaviour
                 _connectedLobby = joined_lobby;
                 Debug.Log("Joined lobby: " + _connectedLobby.Name);
                 
-                InitializePlayerDataInfrictions();
+                InitializePlayerDataInfrictionsAndName();
             }
             
             return string.Empty;
@@ -208,7 +218,7 @@ public class LobbyManager : MonoBehaviour
         _applicationInFocusAndNotPaused = !pauseStatus;
     }
 
-    private async void InitializePlayerDataInfrictions()
+    private async void InitializePlayerDataInfrictionsAndName()
     {
         try
         {
@@ -219,6 +229,11 @@ public class LobbyManager : MonoBehaviour
                     "LastSeen", new PlayerDataObject(
                         visibility: PlayerDataObject.VisibilityOptions.Member,
                         value: DateTime.Now.ToString())
+                },
+                {
+                    "Name", new PlayerDataObject(
+                        visibility: PlayerDataObject.VisibilityOptions.Member,
+                        value: PickUniquePlayerName())
                 }
             };
 
@@ -299,6 +314,30 @@ public class LobbyManager : MonoBehaviour
         {
             Debug.LogError("Unhandled Exception Case!");
             Debug.LogError(l);
+        }
+    }
+
+    private string PickUniquePlayerName()
+    {
+        while (true)
+        {
+            int random_index = Random.Range(0, _playerNames.Count - 1);
+            bool unique = true;
+            string temp = _playerNames[random_index];
+
+            foreach (Player player in _connectedLobby.Players)
+            {
+                if (player.Data != null && player.Data.ContainsKey("Name") && player.Data["Name"].Value.Equals(temp))
+                {
+                    unique = false;
+                    break;
+                }
+            }
+
+            if (unique)
+            {
+                return temp;
+            }
         }
     }
 }

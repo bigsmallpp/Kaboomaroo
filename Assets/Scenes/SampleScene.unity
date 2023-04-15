@@ -4321,6 +4321,7 @@ GameObject:
   - component: {fileID: 1836204154}
   - component: {fileID: 1836204156}
   - component: {fileID: 1836204155}
+  - component: {fileID: 1836204157}
   m_Layer: 5
   m_Name: LobbyCode
   m_TagString: Untagged
@@ -4346,7 +4347,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -275}
-  m_SizeDelta: {x: 400, y: 75}
+  m_SizeDelta: {x: 400, y: 150}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1836204155
 MonoBehaviour:
@@ -4403,7 +4404,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -4445,6 +4446,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1836204153}
   m_CullTransparentMesh: 1
+--- !u!114 &1836204157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836204153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22fe1c90902d6ea4a81b7d0e82b84771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 1836204155}
 --- !u!1 &1896359906
 GameObject:
   m_ObjectHideFlags: 0
@@ -5290,3 +5304,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lobbyPlayerEntryPrefab: {fileID: 3631780780960933865, guid: ba09f988b8929fb44a2552d0564e0991, type: 3}
   _lobbyGridView: {fileID: 1156515391}
+  _lobbyCode: {fileID: 1836204155}

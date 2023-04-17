@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyUpdaterUI : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class LobbyUpdaterUI : MonoBehaviour
     [SerializeField] private Dictionary<string, GameObject> _lobbyPlayers;
     [SerializeField] private GameObject _lobbyGridView;
     [SerializeField] private TextMeshProUGUI _lobbyCode;
+    [SerializeField] private Button _buttonStartGame;
 
     private const int LOBBY_CODE_LENGTH = 6;
 
@@ -20,9 +22,10 @@ public class LobbyUpdaterUI : MonoBehaviour
         _lobbyPlayers = new Dictionary<string, GameObject>();
     }
 
-    public void UpdateLobbydata(Lobby lobby)
+    public void UpdateLobbydata(Lobby lobby, bool is_host)
     {
         UpdatePlayersInGridView(lobby.Players);
+        UpdateStartGameButton(is_host);
         
         // TODO Set LobbyName
         // LobbyName = active_lobby.Name;
@@ -107,5 +110,10 @@ public class LobbyUpdaterUI : MonoBehaviour
     public void StartGame()
     {
         ManagerSystems.Instance.GetNetworkingManager().GetLobbyManager().StartGame();
+    }
+
+    private void UpdateStartGameButton(bool is_host)
+    {
+        _buttonStartGame.gameObject.SetActive(is_host);
     }
 }

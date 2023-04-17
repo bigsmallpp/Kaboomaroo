@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using Unity.Services.Relay;
+using Unity.Services.Relay.Models;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -26,12 +29,18 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private float _allowedIdleTime;
     private bool _applicationInFocusAndNotPaused = true;
     
+    private const string KEY_LAST_SEEN = "LastSeen";
+    private const string KEY_NAME = "Name";
+    private const string KEY_RELAY_CODE = "RelayCode";
+
+    private bool _joinedGame = false;
+    
     private List<string> _playerNames = new List<string>()
     {
         "Pristine Platypus",
         "Graceful Gorilla",
         "Happy Hippo",
-        "Doubtful Doggo",
+        "Dreadful Doggo",
         "Amazing Ape"
     };
     private async void Start()
@@ -42,6 +51,45 @@ public class LobbyManager : MonoBehaviour
         AuthenticationService.Instance.SignedIn += SignedIn;
         AuthenticationService.Instance.SignInFailed += SignInFailed;
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+    private async void CreateRelay()
+    {
+        try
+        {
+            // Host is not included here
+            Allocation relay_alloc = await RelayService.Instance.CreateAllocationAsync(_connectedLobby.MaxPlayers - 1);
+            string relay_code = await RelayService.Instance.GetJoinCodeAsync(relay_alloc.AllocationId);
+            Debug.Log(relay_code);
+
+            RelayServerData server_data = new RelayServerData(relay_alloc, "dtls");
+            
+            // Set the Relay Code in the Lobby Variables
+            UpdateLobbyOptions options = new UpdateLobbyOptions();
+            options.Data = new Dictionary<string, DataObject>()
+            {
+                {
+                    KEY_RELAY_CODE,
+                    new DataObject(
+                        visibility: DataObject.VisibilityOptions.Member, 
+                        value: relay_code)
+                }
+            };
+
+            _connectedLobby = await LobbyService.Instance.UpdateLobbyAsync(_connectedLobby.Id, options);
+            _joinedGame = true;
+            // TODO
+            // Join via NetworkManager
+        }
+        catch (RelayServiceException r)
+        {
+            // TODO Handle Relay Service Exception
+            Debug.LogError(r);
+        }
+        catch (LobbyServiceException l)
+        {
+            HandleLobbyServiceException(l);
+        }
     }
 
     private void Update()
@@ -66,6 +114,15 @@ public class LobbyManager : MonoBehaviour
         {
             // TODO Read Docs
             CreateLobbyOptions options = new CreateLobbyOptions();
+            options.Data = new Dictionary<string, DataObject>()
+            {
+                {
+                    KEY_RELAY_CODE,
+                    new DataObject(
+                        visibility: DataObject.VisibilityOptions.Member, 
+                        value: String.Empty)
+                }
+            };
             
             _connectedLobby = await LobbyService.Instance.CreateLobbyAsync(name, max_players, options);
             Debug.Log("Created Lobby " + _connectedLobby.Name + " with " + _connectedLobby.MaxPlayers + " max players!");
@@ -122,6 +179,7 @@ public class LobbyManager : MonoBehaviour
                     _connectedLobby = await LobbyService.Instance.GetLobbyAsync(_connectedLobby.Id);
                     ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby);
                     SendPlayerheartbeat();
+                    CheckRelayCodeSet();
                 }
             }
         }
@@ -226,12 +284,12 @@ public class LobbyManager : MonoBehaviour
             options.Data = new Dictionary<string, PlayerDataObject>()
             {
                 {
-                    "LastSeen", new PlayerDataObject(
+                    KEY_LAST_SEEN, new PlayerDataObject(
                         visibility: PlayerDataObject.VisibilityOptions.Member,
                         value: DateTime.Now.ToString())
                 },
                 {
-                    "Name", new PlayerDataObject(
+                    KEY_NAME, new PlayerDataObject(
                         visibility: PlayerDataObject.VisibilityOptions.Member,
                         value: PickUniquePlayerName())
                 }
@@ -255,7 +313,7 @@ public class LobbyManager : MonoBehaviour
                 options.Data = new Dictionary<string, PlayerDataObject>()
                 {
                     {
-                        "LastSeen", new PlayerDataObject(
+                        KEY_LAST_SEEN, new PlayerDataObject(
                             visibility: PlayerDataObject.VisibilityOptions.Member,
                             value: DateTime.Now.ToString())
                     }
@@ -275,9 +333,9 @@ public class LobbyManager : MonoBehaviour
         {
             foreach (Player player in _connectedLobby.Players)
             {
-                if (player.Data != null && player.Data.ContainsKey("LastSeen"))
+                if (player.Data != null && player.Data.ContainsKey(KEY_LAST_SEEN))
                 {
-                    DateTime last_seen = DateTime.Parse(player.Data["LastSeen"].Value);
+                    DateTime last_seen = DateTime.Parse(player.Data[KEY_LAST_SEEN].Value);
                     float time_diff = (DateTime.Now - last_seen).Seconds;
                     
                     Debug.Log("(" + player.Id + ") Time since no response: " + time_diff);
@@ -327,7 +385,7 @@ public class LobbyManager : MonoBehaviour
 
             foreach (Player player in _connectedLobby.Players)
             {
-                if (player.Data != null && player.Data.ContainsKey("Name") && player.Data["Name"].Value.Equals(temp))
+                if (player.Data != null && player.Data.ContainsKey(KEY_NAME) && player.Data[KEY_NAME].Value.Equals(temp))
                 {
                     unique = false;
                     break;
@@ -338,6 +396,62 @@ public class LobbyManager : MonoBehaviour
             {
                 return temp;
             }
+        }
+    }
+
+    public void StartGame()
+    {
+        if (_connectedLobby == null)
+        {
+            return;
+        }
+
+        if (IsHost())
+        {
+            CreateRelay();
+        }
+        else
+        {
+            // TODO
+            // Join Relay Server (Client)
+            _joinedGame = true;
+        }
+    }
+
+    private void CheckRelayCodeSet()
+    {
+        if (_joinedGame)
+        {
+            return;
+        }
+        
+        if (IsHost())
+        {
+            return;
+        }
+
+        string relay_code = _connectedLobby.Data[KEY_RELAY_CODE].Value;
+        if (_connectedLobby.Data != null && !relay_code.Equals(string.Empty))
+        {
+            StartGame();
+        }
+    }
+
+    private async void JoinRelay()
+    {
+        try
+        {
+            string relay_code = _connectedLobby.Data[KEY_RELAY_CODE].Value;
+            
+            // Host is not included here
+            JoinAllocation relay_alloc = await RelayService.Instance.JoinAllocationAsync(relay_code);
+            RelayServerData server_data = new RelayServerData(relay_alloc, "dtls");
+            
+            // TODO Join game via NetworkManager
+        }
+        catch (RelayServiceException r)
+        {
+            Debug.LogError(r);
         }
     }
 }

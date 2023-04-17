@@ -103,4 +103,9 @@ public class LobbyUpdaterUI : MonoBehaviour
             _lobbyCode.text = "Lobby Code: " + code;
         }
     }
+
+    public void StartGame()
+    {
+        ManagerSystems.Instance.GetNetworkingManager().GetLobbyManager().StartGame();
+    }
 }

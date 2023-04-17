@@ -177,7 +177,7 @@ public class LobbyManager : MonoBehaviour
                 {
                     _lobbyUpdateElapsedTime = 0.0f;
                     _connectedLobby = await LobbyService.Instance.GetLobbyAsync(_connectedLobby.Id);
-                    ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby);
+                    ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby, IsHost());
                     SendPlayerheartbeat();
                     CheckRelayCodeSet();
                 }
@@ -453,5 +453,10 @@ public class LobbyManager : MonoBehaviour
         {
             Debug.LogError(r);
         }
+    }
+
+    public void SetJoinedGame(bool val)
+    {
+        _joinedGame = val;
     }
 }

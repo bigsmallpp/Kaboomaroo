@@ -117,8 +117,16 @@ public class MainMenuButtons : MonoBehaviour
         _connectingToLobbyScreen.SetActive(true);
         _lobbyScreen.SetActive(true);
         _activeMenu = _connectingToLobbyScreen;
+
+        while (true)
+        {
+            if (_lobbyScreen.GetComponent<LobbyUpdaterUI>().GetInitializedPlayersOnLobbyScreen() > 0)
+            {
+                break;
+            }
+            yield return new WaitForSeconds(0.3f);
+        }
         
-        yield return new WaitForSeconds(4.0f);
         _activeMenu.SetActive(false);
         _activeMenu = _lobbyScreen;
     }

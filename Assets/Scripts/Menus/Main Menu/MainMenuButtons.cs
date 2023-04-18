@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class MainMenuButtons : MonoBehaviour
 {
@@ -12,11 +13,18 @@ public class MainMenuButtons : MonoBehaviour
     [SerializeField] private GameObject _createLobbyMenu;
     [SerializeField] private GameObject _optionsMenu;
     [SerializeField] private GameObject _lobbyScreen;
-    
+
     [Header("The connecting screen")]
     [SerializeField] private GameObject _connectingToLobbyScreen;
     
     private GameObject _activeMenu;
+    private CustomInput _input;
+
+    private void Awake()
+    {
+        _input = new CustomInput();
+        _input.CheckForButton.CheckForButtonAction.performed += OnEscapeButtonPressed;
+    }
 
     private void Start()
     {
@@ -25,7 +33,7 @@ public class MainMenuButtons : MonoBehaviour
 
     private void Update()
     {
-        HandleBackButtonPress();
+        //HandleBackButtonPress();
     }
 
     public void SwitchToMainMenu()
@@ -67,7 +75,7 @@ public class MainMenuButtons : MonoBehaviour
         StartCoroutine(PlayConnectingAnimation());
     }
 
-    private void HandleBackButtonPress()
+    /*private void HandleBackButtonPress()
     {
         // For the Android App
         if (Application.platform == RuntimePlatform.Android)
@@ -85,7 +93,7 @@ public class MainMenuButtons : MonoBehaviour
                 EmulateBackArrow();
             }
         }
-    }
+    }*/
 
     private void EmulateBackArrow()
     {
@@ -129,5 +137,25 @@ public class MainMenuButtons : MonoBehaviour
         
         _activeMenu.SetActive(false);
         _activeMenu = _lobbyScreen;
+    }
+
+    private void OnEnable()
+    {
+        _input.Enable();
+        _input.CheckForButton.CheckForButtonAction.performed += OnEscapeButtonPressed;
+    }
+
+    private void OnDisable()
+    {
+        _input.Disable();
+        _input.CheckForButton.CheckForButtonAction.performed -= OnEscapeButtonPressed;
+    }
+
+    private void OnEscapeButtonPressed(InputAction.CallbackContext context) //Template for adding listener on buttons and actions
+    {
+        if (context.action.triggered && context.action.ReadValue<float>() != 0 && context.action.phase == InputActionPhase.Performed)
+        {
+            EmulateBackArrow();
+        }
     }
 }

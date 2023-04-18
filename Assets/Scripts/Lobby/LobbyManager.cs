@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -10,6 +12,7 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class LobbyManager : MonoBehaviour
@@ -53,7 +56,7 @@ public class LobbyManager : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
-    private async void CreateRelay()
+    private async void CreateRelayAndStartHost()
     {
         try
         {
@@ -78,8 +81,10 @@ public class LobbyManager : MonoBehaviour
 
             _connectedLobby = await LobbyService.Instance.UpdateLobbyAsync(_connectedLobby.Id, options);
             _joinedGame = true;
-            // TODO
-            // Join via NetworkManager
+            
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(server_data);
+            NetworkManager.Singleton.StartHost();
+            NetworkManager.Singleton.SceneManager.LoadScene("DummyScene", LoadSceneMode.Single);
         }
         catch (RelayServiceException r)
         {
@@ -177,7 +182,12 @@ public class LobbyManager : MonoBehaviour
                 {
                     _lobbyUpdateElapsedTime = 0.0f;
                     _connectedLobby = await LobbyService.Instance.GetLobbyAsync(_connectedLobby.Id);
-                    ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby, IsHost());
+
+                    if (!_joinedGame)
+                    {
+                        ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby, IsHost());
+                    }
+                    
                     SendPlayerheartbeat();
                     CheckRelayCodeSet();
                 }
@@ -408,13 +418,11 @@ public class LobbyManager : MonoBehaviour
 
         if (IsHost())
         {
-            CreateRelay();
+            CreateRelayAndStartHost();
         }
         else
         {
-            // TODO
-            // Join Relay Server (Client)
-            _joinedGame = true;
+            JoinRelayAndStartClient();
         }
     }
 
@@ -437,7 +445,7 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    private async void JoinRelay()
+    private async void JoinRelayAndStartClient()
     {
         try
         {
@@ -446,8 +454,10 @@ public class LobbyManager : MonoBehaviour
             // Host is not included here
             JoinAllocation relay_alloc = await RelayService.Instance.JoinAllocationAsync(relay_code);
             RelayServerData server_data = new RelayServerData(relay_alloc, "dtls");
-            
-            // TODO Join game via NetworkManager
+
+            _joinedGame = true;
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(server_data);
+            NetworkManager.Singleton.StartClient();
         }
         catch (RelayServiceException r)
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
@@ -115,5 +116,10 @@ public class LobbyUpdaterUI : MonoBehaviour
     private void UpdateStartGameButton(bool is_host)
     {
         _buttonStartGame.gameObject.SetActive(is_host);
+    }
+
+    public int GetInitializedPlayersOnLobbyScreen()
+    {
+        return _lobbyGridView.transform.Cast<Transform>().ToList().Count;
     }
 }

@@ -84,7 +84,7 @@ public class LobbyManager : MonoBehaviour
             
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(server_data);
             NetworkManager.Singleton.StartHost();
-            NetworkManager.Singleton.SceneManager.LoadScene("DummyScene", LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene("GameplayScene", LoadSceneMode.Single);
         }
         catch (RelayServiceException r)
         {
@@ -468,5 +468,10 @@ public class LobbyManager : MonoBehaviour
     public void SetJoinedGame(bool val)
     {
         _joinedGame = val;
+    }
+
+    public int GetConnectedPlayerCount()
+    {
+        return _connectedLobby == null ? 0 : _connectedLobby.Players.Count;
     }
 }

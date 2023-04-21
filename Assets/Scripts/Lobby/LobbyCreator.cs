@@ -8,6 +8,7 @@ public class LobbyCreator : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _playerCount;
     [SerializeField] private TMP_InputField _lobbyName;
+    [SerializeField] private TextMeshProUGUI _errorText;
 
     public async void CreateLobby()
     {
@@ -18,7 +19,7 @@ public class LobbyCreator : MonoBehaviour
         }
         
         int max_players = int.Parse(_playerCount.text);
-        string response = await ManagerSystems.Instance.GetNetworkingManager().GetLobbyManager().CreateLobby(name, max_players);
+        string response = await LobbyManager.Instance.CreateLobby(name, max_players);
 
         if (response.Equals(string.Empty))
         {
@@ -27,6 +28,23 @@ public class LobbyCreator : MonoBehaviour
         else
         {
             // Print Error Text On Screen
+        }
+    }
+
+    public async void CreateLobbyWithRandomName()
+    {
+        string name = "My Funny Kaboomeroo Lobby";
+        int max_players = 4;
+        string response = await LobbyManager.Instance.CreateLobby(name, max_players);
+
+        if (response.Equals(string.Empty))
+        {
+            _errorText.text = "";
+            ManagerSystems.Instance.GetMenuManager().SetupLobbyScreen();
+        }
+        else
+        {
+            _errorText.text = response;
         }
     }
 }

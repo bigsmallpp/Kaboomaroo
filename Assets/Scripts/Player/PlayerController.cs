@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -11,35 +12,37 @@ public class PlayerController : NetworkBehaviour
 
     private CustomInput input = null;
     private Vector2 direction = Vector2.zero;
+    
+    private NetworkVariable<bool> _controlsEnabled = new NetworkVariable<bool>(true);
+    [SerializeField] private bool _colliding = false;
+
+    [Header("Networked Vars")] [SerializeField]
+    private NetworkVariable<Vector2> _directionNetworked = new NetworkVariable<Vector2>(new Vector2(0, 0),
+                                                    NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<float> _speedNetworked = new NetworkVariable<float>(3.0f, 
+                                                    NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private void Awake()
     {
         rigidbody_player = GetComponent<Rigidbody2D>();
         input = new CustomInput();
         input.Player.Movement.performed += OnMovementPerformed;
         input.Player.Movement.canceled += OnMovementStopped;
+        input.Player.Actions.performed += PlantBomb;
     }
     private void FixedUpdate()
     {
-        // TODO Only for testing
-        return;
-        if (IsOwner && IsServer)
+        if (!_controlsEnabled.Value)
         {
-            rigidbody_player.velocity = direction * speed;
-            Debug.Log("Moving in Owner + Server");
-        }
-        else if (IsOwner && IsClient && !IsServer)
-        {
-            rigidbody_player.velocity = direction * speed;
-            
-            // EFFICIENCY
-            if (rigidbody_player.velocity == Vector2.zero && direction == Vector2.zero)
-            {
-                return;
-            }
-            RPC_SetPlayerVelocityServerRpc(direction, speed);
-            Debug.Log("Moving in Owner + Client");
+            return;
         }
 
+        if (IsOwner)
+        {
+            _directionNetworked.Value = direction;
+            _speedNetworked.Value = speed;
+        }
+        
+        rigidbody_player.velocity = direction * speed;
     }
 
     private void OnEnable()
@@ -47,6 +50,11 @@ public class PlayerController : NetworkBehaviour
         input.Enable();
         input.Player.Movement.performed += OnMovementPerformed;
         input.Player.Movement.canceled += OnMovementStopped;
+        
+        // Interaction Key (Space) For Bombas
+        input.Player.Actions.performed += PlantBomb;
+        
+        // Escape Key for Menus
         input.CheckForButton.CheckForButtonAction.performed += OnButtonPressed;
     }
 
@@ -55,6 +63,11 @@ public class PlayerController : NetworkBehaviour
         input.Disable();
         input.Player.Movement.performed -= OnMovementPerformed;
         input.Player.Movement.canceled -= OnMovementStopped;
+        
+        // Interaction Key (Space) For Bombas
+        input.Player.Actions.performed -= PlantBomb;
+        
+        // Escape Key for Menus
         input.CheckForButton.CheckForButtonAction.performed -= OnButtonPressed;
     }
 
@@ -73,14 +86,46 @@ public class PlayerController : NetworkBehaviour
         if (context.action.triggered && context.action.ReadValue<float>() != 0 && context.action.phase == InputActionPhase.Performed)
         {
             //Perform Trigger Pressed Actions
-            Debug.Log("Button Pressed");
+            Debug.Log("Escape Pressed");
+        }
+    }
+    
+    private void PlantBomb(InputAction.CallbackContext context)
+    {
+        if (!_controlsEnabled.Value)
+        {
+            return;
+        }
+
+        if (context.action.triggered && context.action.ReadValue<float>() != 0 && context.action.phase == InputActionPhase.Performed)
+        {
+            // TODO Plant Bomb here
+            if (IsServer)
+            {
+                GameObject tile_manager = GameObject.FindWithTag("TileManager");
+                tile_manager.GetComponent<TileManager>().RemoveFirstDestructibleTiles(15);
+            }
         }
     }
 
-    [ServerRpc]
-    private void RPC_SetPlayerVelocityServerRpc(Vector2 velocity, float speed)
+    public void EnableControls()
     {
-        rigidbody_player.velocity = velocity * speed;
+        _controlsEnabled.Value = true;
+    }
+    
+    public void DisableControls()
+    {
+        _controlsEnabled.Value = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        _colliding = true;
+    }
+    
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        _colliding = false;
     }
 }
     

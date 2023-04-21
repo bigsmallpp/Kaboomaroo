@@ -27,7 +27,7 @@ public class JoinLobbyLogic : MonoBehaviour
             return;
         }
         
-        string join = await ManagerSystems.Instance.GetNetworkingManager().GetLobbyManager().JoinLobbyWithCode(code);
+        string join = await LobbyManager.Instance.JoinLobbyWithCode(code);
         _lobbyCode.text = "";
         
         // Joined Successfully, no error

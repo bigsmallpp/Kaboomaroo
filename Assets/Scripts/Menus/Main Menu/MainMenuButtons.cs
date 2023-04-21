@@ -13,11 +13,11 @@ public class MainMenuButtons : MonoBehaviour
     [SerializeField] private GameObject _createLobbyMenu;
     [SerializeField] private GameObject _optionsMenu;
     [SerializeField] private GameObject _lobbyScreen;
-
+    [SerializeField] private GameObject _activeMenu;
+    
     [Header("The connecting screen")]
     [SerializeField] private GameObject _connectingToLobbyScreen;
     
-    private GameObject _activeMenu;
     private CustomInput _input;
 
     private void Awake()
@@ -28,7 +28,6 @@ public class MainMenuButtons : MonoBehaviour
 
     private void Start()
     {
-        _activeMenu = _mainMenu;
     }
 
     private void Update()

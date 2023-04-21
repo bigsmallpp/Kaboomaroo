@@ -17,7 +17,12 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(this);
+        if (ManagerSystems.Instance != null)
+        {
+            LobbyManager.Instance.SetJoinedGame(false);
+            ManagerSystems.Instance.SetMenuManager(this);
+        }
+        
         StartCoroutine(WaitForInitAndSetIPAddress());
     }
 

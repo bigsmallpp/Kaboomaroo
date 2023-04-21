@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Services.Lobbies.Models;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PlayerSpawner : NetworkBehaviour
 {
@@ -33,7 +35,7 @@ public class PlayerSpawner : NetworkBehaviour
         {
             Debug.Log("Spawned PlayerSpawner");
             onAllPlayersConnected.AddListener(SpawnPlayers);
-            _playersInLobby.Value = ManagerSystems.Instance.GetNetworkingManager().GetLobbyManager().GetConnectedPlayerCount();
+            _playersInLobby.Value = LobbyManager.Instance.GetConnectedPlayerCount();
             _connectedPlayers.Value += 1;
         }
         else
@@ -114,7 +116,16 @@ public class PlayerSpawner : NetworkBehaviour
         {
             GameObject player = Instantiate(_playerPrefab, _spawnPoints[index], Quaternion.identity);
             player.GetComponent<NetworkObject>().SpawnAsPlayerObject(client);
+            player.GetComponent<PlayerController>().DisableControls();
+            onCountdownOver.AddListener(player.GetComponent<PlayerController>().EnableControls);
             index++;
         }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        Debug.LogError("ON NETWORK DESPAWN CALLED");
+        NetworkManager.Singleton.Shutdown();
+        SceneManager.LoadScene("MainMenuDisconnect", LoadSceneMode.Single);
     }
 }

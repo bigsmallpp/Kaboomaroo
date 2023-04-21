@@ -110,7 +110,7 @@ public class LobbyUpdaterUI : MonoBehaviour
 
     public void StartGame()
     {
-        ManagerSystems.Instance.GetNetworkingManager().GetLobbyManager().StartGame();
+        LobbyManager.Instance.StartGame();
     }
 
     private void UpdateStartGameButton(bool is_host)

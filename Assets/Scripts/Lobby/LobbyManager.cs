@@ -17,7 +17,9 @@ using Random = UnityEngine.Random;
 
 public class LobbyManager : MonoBehaviour
 {
-
+    private static LobbyManager _instance;
+    public static LobbyManager Instance => _instance;
+    
     private Lobby _connectedLobby;
     
     [Header("Heartbeat Variables")]
@@ -48,6 +50,14 @@ public class LobbyManager : MonoBehaviour
     };
     private async void Start()
     {
+        if (_instance)
+        {
+            _instance._joinedGame = false;
+            Destroy(this);
+            return;
+        }
+
+        _instance = this;
         DontDestroyOnLoad(this);
         await UnityServices.InitializeAsync();
 
@@ -182,9 +192,10 @@ public class LobbyManager : MonoBehaviour
                 {
                     _lobbyUpdateElapsedTime = 0.0f;
                     _connectedLobby = await LobbyService.Instance.GetLobbyAsync(_connectedLobby.Id);
-
+                    
                     if (!_joinedGame)
                     {
+                        Debug.Log("Update Lobby UI called");
                         ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby, IsHost());
                     }
                     
@@ -248,7 +259,10 @@ public class LobbyManager : MonoBehaviour
     private void OnDestroy()
     {
         // TODO Doesnt work properly on force quit
-        RemovePlayerFromConnectedLobby();
+        if (_instance == this)
+        {
+            RemovePlayerFromConnectedLobby();
+        }
     }
 
     public void SendPlayerheartbeat()

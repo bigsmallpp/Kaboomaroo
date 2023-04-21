@@ -9,7 +9,6 @@ public class ManagerSystems : MonoBehaviour
     public static ManagerSystems Instance => _manager;
 
     [SerializeField] private MenuManager _menuManager;
-    [SerializeField] private NetworkingSystems _networkingManager;
     
     // Start is called before the first frame update
     void Start()
@@ -31,13 +30,13 @@ public class ManagerSystems : MonoBehaviour
         
     }
 
-    public NetworkingSystems GetNetworkingManager()
-    {
-        return _networkingManager;
-    }
-
     public MenuManager GetMenuManager()
     {
         return _menuManager;
+    }
+
+    public void SetMenuManager(MenuManager manager)
+    {
+        _menuManager = manager;
     }
 }

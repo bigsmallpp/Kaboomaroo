@@ -488,4 +488,20 @@ public class LobbyManager : MonoBehaviour
     {
         return _connectedLobby == null ? 0 : _connectedLobby.Players.Count;
     }
+
+    public async void ResetRelayCode()
+    {
+        UpdateLobbyOptions options = new UpdateLobbyOptions();
+        options.Data = new Dictionary<string, DataObject>()
+        {
+            {
+                KEY_RELAY_CODE,
+                new DataObject(
+                    visibility: DataObject.VisibilityOptions.Member, 
+                    value: string.Empty)
+            }
+        };
+
+        _connectedLobby = await LobbyService.Instance.UpdateLobbyAsync(_connectedLobby.Id, options);
+    }
 }

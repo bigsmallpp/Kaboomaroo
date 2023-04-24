@@ -118,6 +118,11 @@ public class LobbyUpdaterUI : MonoBehaviour
         _buttonStartGame.gameObject.SetActive(is_host);
     }
 
+    public void DisableStartGameButton()
+    {
+        _buttonStartGame.interactable = false;
+    }
+
     public int GetInitializedPlayersOnLobbyScreen()
     {
         return _lobbyGridView.transform.Cast<Transform>().ToList().Count;

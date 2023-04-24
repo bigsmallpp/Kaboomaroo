@@ -33,7 +33,7 @@ public class LobbyCreator : MonoBehaviour
 
     public async void CreateLobbyWithRandomName()
     {
-        string name = "My Funny Kaboomeroo Lobby";
+        string name = "My Cool Kaboomeroo Lobby";
         int max_players = 4;
         string response = await LobbyManager.Instance.CreateLobby(name, max_players);
 

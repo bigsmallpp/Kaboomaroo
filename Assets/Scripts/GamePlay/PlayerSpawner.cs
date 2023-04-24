@@ -35,6 +35,7 @@ public class PlayerSpawner : NetworkBehaviour
         {
             Debug.Log("Spawned PlayerSpawner");
             onAllPlayersConnected.AddListener(SpawnPlayers);
+            onAllPlayersConnected.AddListener(RemoveRelayCode);
             _playersInLobby.Value = LobbyManager.Instance.GetConnectedPlayerCount();
             _connectedPlayers.Value += 1;
         }
@@ -127,5 +128,10 @@ public class PlayerSpawner : NetworkBehaviour
         Debug.LogError("ON NETWORK DESPAWN CALLED");
         NetworkManager.Singleton.Shutdown();
         SceneManager.LoadScene("MainMenuDisconnect", LoadSceneMode.Single);
+    }
+
+    public void RemoveRelayCode()
+    {
+        LobbyManager.Instance.ResetRelayCode();
     }
 }

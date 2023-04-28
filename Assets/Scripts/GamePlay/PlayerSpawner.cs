@@ -13,6 +13,7 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField] private List<Vector2> _spawnPoints;
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private float _countdownLength;
+    [SerializeField] private float _timerForPlayersToConnect = 10.0f;
 
     [Header("Player Connections (Networked Variables)")]
     [SerializeField] private NetworkVariable<int> _playersInLobby = new NetworkVariable<int>();
@@ -24,6 +25,10 @@ public class PlayerSpawner : NetworkBehaviour
     public UnityEventDoubleInt onPlayerConnected;
     public UnityEventFloat onCountdownTickDown;
     public UnityEvent onCountdownOver;
+
+    [Header("The Players")]
+    [SerializeField] private List<Tuple<ulong, GameObject>> _players = new List<Tuple<ulong, GameObject>>();
+
     
     public override void OnNetworkSpawn()
     {
@@ -45,6 +50,11 @@ public class PlayerSpawner : NetworkBehaviour
             // TODO check if game already running
             RPC_CheckInPlayerServerRPC();
         }
+    }
+
+    private void Update()
+    {
+        ReduceTimerForPlayersToConnect();
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -112,6 +122,7 @@ public class PlayerSpawner : NetworkBehaviour
     private void SpawnPlayers()
     {
         IReadOnlyList<ulong> ids = NetworkManager.Singleton.ConnectedClientsIds;
+
         int index = 0;
         foreach (ulong client in ids)
         {
@@ -119,6 +130,9 @@ public class PlayerSpawner : NetworkBehaviour
             player.GetComponent<NetworkObject>().SpawnAsPlayerObject(client);
             player.GetComponent<PlayerController>().DisableControls();
             onCountdownOver.AddListener(player.GetComponent<PlayerController>().EnableControls);
+            
+            _players.Add(new Tuple<ulong, GameObject>(client, player));
+            
             index++;
         }
     }
@@ -133,5 +147,35 @@ public class PlayerSpawner : NetworkBehaviour
     public void RemoveRelayCode()
     {
         LobbyManager.Instance.ResetRelayCode();
+    }
+
+    public GameObject GetPlayerOfClient(ulong owner)
+    {
+        foreach (Tuple<ulong, GameObject> entry in _players)
+        {
+            if (entry.Item1 == owner)
+            {
+                return entry.Item2;
+            }
+        }
+        
+        Debug.LogError("No according PlayerObject found");
+        return null;
+    }
+
+    private void ReduceTimerForPlayersToConnect()
+    {
+        if (!IsServer || _timerForPlayersToConnect <= 0)
+        {
+            return;
+        }
+
+        _timerForPlayersToConnect -= Time.deltaTime;
+        if (_timerForPlayersToConnect <= 0)
+        {
+            _timerForPlayersToConnect = 0.0f;
+            // Force Game Start
+            onAllPlayersConnected.Invoke();
+        }
     }
 }

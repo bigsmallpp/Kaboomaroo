@@ -28,6 +28,12 @@ public class UnityEventDoubleInt : UnityEvent<DoubleInt>
     
 }
 
+[Serializable]
+public class UnityEventBool : UnityEvent<bool>
+{
+    
+}
+
 public struct DoubleInt
 {
     public DoubleInt(int first, int second)

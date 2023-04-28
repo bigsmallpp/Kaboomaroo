@@ -9,15 +9,12 @@ public class GameMenuManager : MonoBehaviour
 {
     [Header("Menus")]
     [SerializeField] private GameObject _menuPreGame;
+    [SerializeField] private GameObject _menuInGame;
 
     [Header("Variables/Texts")] 
     [SerializeField] private TextMeshProUGUI _textConnectedPlayers;
-
-    public void HidePreGameMenuAndSwitchToInGameMenu()
-    {
-        _menuPreGame.SetActive(false);
-    }
-
+    [SerializeField] private TextMeshProUGUI _textYouDied;
+    
     private void SwitchToCountdown()
     {
         _textConnectedPlayers.text = "3.0";
@@ -33,7 +30,7 @@ public class GameMenuManager : MonoBehaviour
         spawner.onPlayerConnected.AddListener(UpdateConnectedPlayerCount);
         spawner.onAllPlayersConnected.AddListener(SwitchToCountdown);
         spawner.onCountdownTickDown.AddListener(UpdateCountdown);
-        spawner.onCountdownOver.AddListener(HidePreGameMenuAndSwitchToInGameMenu);
+        spawner.onCountdownOver.AddListener(SwitchToIngameMenu);
     }
 
     public void InitializeConnectedPlayers(PlayerSpawner spawner)
@@ -44,5 +41,27 @@ public class GameMenuManager : MonoBehaviour
     private void UpdateCountdown(float new_val)
     {
         _textConnectedPlayers.text = new_val.ToString("0.0");
+    }
+
+    public void InitializeInGameEvents(NetworkedGameMenus menus)
+    {
+        menus.onShowDeathScreen.AddListener(SetDeathMessageActive);
+    }
+
+    public void SwitchToIngameMenu()
+    {
+        _menuPreGame.gameObject.SetActive(false);
+        _menuInGame.gameObject.SetActive(true);
+    }
+    
+    public void SwitchPregameMenu()
+    {
+        _menuInGame.gameObject.SetActive(false);
+        _menuPreGame.gameObject.SetActive(true);
+    }
+
+    public void SetDeathMessageActive(bool val)
+    {
+        _textYouDied.gameObject.SetActive(val);
     }
 }

@@ -33,6 +33,14 @@ public class TileManager : NetworkBehaviour
         _mapIndestructible = indestructible;
     }
 
+    public void RemoveTileAtPosition(Vector3Int pos)
+    {
+        _mapDestructible.SetTile(pos, null);
+        _mapDestructible.RefreshTile(pos);
+        
+        RemoveTileAtPositionClientRpc(new Vector2Int(pos.x, pos.y));
+    }
+
     public void RemoveFirstDestructibleTiles(int amount)
     {
         BoundsInt bounds = _mapDestructible.cellBounds;
@@ -67,5 +75,29 @@ public class TileManager : NetworkBehaviour
         _mapDestructible.SetTile(position, null);
         _mapDestructible.RefreshTile(position);
     }
+
+    public TileBase GetTileOfDestructibleMap(Vector3Int pos)
+    {
+        return _mapDestructible.GetTile(pos);
+    }
+
+    public bool CheckIndestructibleTile(Vector2 pos)
+    {
+        Vector3Int cell_pos = _mapIndestructible.WorldToCell(pos);
+        return _mapIndestructible.GetTile(cell_pos) == _tileIndestructible;
+    }
     
+    public bool CheckDestructibleTile(Vector2 pos)
+    {
+        Vector3Int cell_pos = _mapDestructible.WorldToCell(pos);
+        TileBase tile_to_check = _mapDestructible.GetTile(cell_pos);
+        bool hit = tile_to_check == _tileDestructible || tile_to_check == null;
+
+        if (hit)
+        {
+            RemoveTileAtPosition(cell_pos);
+        }
+
+        return hit;
+    }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -24,6 +25,11 @@ public class MenuManager : MonoBehaviour
         }
         
         StartCoroutine(WaitForInitAndSetIPAddress());
+    }
+
+    private void Awake()
+    {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
     // Update is called once per frame

@@ -8,6 +8,7 @@ TagManager:
   - TileManager
   - TilesDestructible
   - TilesIndestructible
+  - ItemSpawner
   layers:
   - Default
   - TransparentFX

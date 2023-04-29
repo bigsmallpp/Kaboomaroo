@@ -26,6 +26,19 @@ public class PlayerController : NetworkBehaviour
     [Header("Bomb Prefab")]
     [SerializeField] private GameObject _prefBomb;
 
+    private AnimUpdater animUpdater;
+
+    public enum Direction
+    {
+        Up = 1,
+        Down = 2,
+        Left = 3,
+        Right = 4,
+        Idle = 5
+    }
+
+    Direction curr_direction;
+
     private void Awake()
     {
         rigidbody_player = GetComponent<Rigidbody2D>();
@@ -33,7 +46,7 @@ public class PlayerController : NetworkBehaviour
         input.Player.Movement.performed += OnMovementPerformed;
         input.Player.Movement.canceled += OnMovementStopped;
         input.Player.Actions.performed += PlantBomb;
-        
+        animUpdater = GetComponentInChildren<AnimUpdater>();
     }
     private void FixedUpdate()
     {
@@ -49,6 +62,7 @@ public class PlayerController : NetworkBehaviour
         }
 
         rigidbody_player.velocity = direction * speed;
+        animUpdater.updateAnim(curr_direction);
     }
 
     private void OnEnable()
@@ -80,12 +94,35 @@ public class PlayerController : NetworkBehaviour
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
         direction = value.ReadValue<Vector2>();
+        if (Math.Abs(direction.x) > Math.Abs(direction.y))
+        {
+            if (direction.x > 0) 
+            {
+                curr_direction = Direction.Right;
+            }
+            else
+            {
+                curr_direction = Direction.Left;
+            }
+        }
+        else
+        {
+            if (direction.y > 0)
+            {
+                curr_direction = Direction.Up;
+            }
+            else
+            {
+                curr_direction = Direction.Down;
+            }
+        }
         direction = direction.normalized;
     }
 
     private void OnMovementStopped(InputAction.CallbackContext value)
     {
         direction = Vector2.zero;
+        curr_direction = Direction.Idle;
     }
    
     private void OnButtonPressed(InputAction.CallbackContext context) //Template for adding listener on buttons and actions

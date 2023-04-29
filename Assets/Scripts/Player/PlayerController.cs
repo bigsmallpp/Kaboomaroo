@@ -49,11 +49,6 @@ public class PlayerController : NetworkBehaviour
         }
 
         rigidbody_player.velocity = direction * speed;
-        //Vector2 move = new Vector2(direction.x * speed, direction.y * speed);
-        //rigidbody_player.AddForce(move.normalized * speed);
-        
-
-        Debug.Log("Velocity: " + rigidbody_player.velocity + " Magnitude: " + rigidbody_player.velocity.magnitude);
     }
 
     private void OnEnable()
@@ -85,22 +80,6 @@ public class PlayerController : NetworkBehaviour
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
         direction = value.ReadValue<Vector2>();
-        if (direction.x > 0)
-        {
-            direction.x = 1.0f;
-        }
-        else
-        {
-            direction.x = -1.0f;
-        }
-        if (direction.y > 0)
-        {
-            direction.y = 1.0f;
-        }
-        else
-        {
-            direction.y = -1.0f;
-        }
         direction = direction.normalized;
     }
 

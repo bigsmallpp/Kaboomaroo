@@ -3,12 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - PlayerSpawner
-  - TileManager
-  - TilesDestructible
-  - TilesIndestructible
-  - NetworkedMenuManager
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -16,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Player
+  - 
   - 
   - 
   - 
@@ -45,10 +40,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Bomb
-    uniqueID: 897150375
-    locked: 0
-  - name: Player
-    uniqueID: 1331824057
     locked: 0

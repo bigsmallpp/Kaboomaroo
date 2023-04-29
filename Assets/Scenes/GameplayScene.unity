@@ -232,9 +232,11 @@ MonoBehaviour:
   _playerSpawner: {fileID: 0}
   _tileManager: {fileID: 0}
   _networkedMenuVaribales: {fileID: 0}
+  _itemSpawner: {fileID: 0}
   _prefPlayerSpawner: {fileID: 1240872112136386582, guid: 579106189bfd51a4499324e4a1c6dc05, type: 3}
   _prefTileManager: {fileID: 1742332978192324528, guid: 08207043d7925ef428a4e775060bd9dd, type: 3}
   _prefNetworkedMenuVariables: {fileID: 8027261963750012927, guid: 722e5992c978e32499a50bac7e4199db, type: 3}
+  _prefItemSpawner: {fileID: 2171991356467690415, guid: 89aab9c76a9fd284ca34805cf6f378dc, type: 3}
   _tilesDestructible: {fileID: 1644009275}
   _tilesIndestructible: {fileID: 250870646}
 --- !u!1 &137374713
@@ -4922,7 +4924,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1331824057
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 0ccc508108fa6ed4fa11b4a467d7f609, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -62,6 +62,7 @@ public class PlayerController : NetworkBehaviour
         }
 
         rigidbody_player.velocity = direction * speed;
+        
         animUpdater.updateAnim(curr_direction);
     }
 
@@ -94,9 +95,16 @@ public class PlayerController : NetworkBehaviour
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
         direction = value.ReadValue<Vector2>();
+        
+        direction = direction.normalized;
+        setCurrentDirection(direction);
+    }
+
+    private void setCurrentDirection(Vector2 direction)
+    {
         if (Math.Abs(direction.x) > Math.Abs(direction.y))
         {
-            if (direction.x > 0) 
+            if (direction.x > 0)
             {
                 curr_direction = Direction.Right;
             }
@@ -116,7 +124,6 @@ public class PlayerController : NetworkBehaviour
                 curr_direction = Direction.Down;
             }
         }
-        direction = direction.normalized;
     }
 
     private void OnMovementStopped(InputAction.CallbackContext value)

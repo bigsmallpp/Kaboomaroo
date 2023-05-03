@@ -35,10 +35,10 @@ public class AnimUpdater : MonoBehaviour
 
     public void updateAnim(PlayerController.Direction curr_direction)
     {
-        /*anim.SetBool("up", false);
+        anim.SetBool("up", false);
         anim.SetBool("down", false);
         anim.SetBool("left", false);
-        anim.SetBool("right", false);*/
+        anim.SetBool("right", false);
         Debug.Log("[KEK] direction: " + curr_direction);
 
         switch (curr_direction)

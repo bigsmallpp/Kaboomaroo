@@ -67,4 +67,13 @@ public class AnimUpdater : MonoBehaviour
                 break;
         }
     }
+
+    public void animPlayerDead()
+    {
+        anim.SetBool("up", false);
+        anim.SetBool("down", false);
+        anim.SetBool("left", false);
+        anim.SetBool("right", false);
+        anim.SetBool("died", true);
+    }
 }

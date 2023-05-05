@@ -202,5 +202,10 @@ public class PlayerController : NetworkBehaviour
         GameObject owner_object = GameObject.FindWithTag("PlayerSpawner").GetComponent<PlayerSpawner>().GetPlayerOfClient(owner);
         SpawnBomb(owner_object, radius);
     }
+
+    public void killPlayer()
+    {
+        animUpdater.animPlayerDead();
+    }
 }
     

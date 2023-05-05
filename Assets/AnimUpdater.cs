@@ -10,6 +10,8 @@ public class AnimUpdater : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        setPlayerVariant(1); //Default Skin
+        //TODO: Set Player skin at startup of lobby
     }
 
     public void setPlayerVariant(int variant)

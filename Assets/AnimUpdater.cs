@@ -41,7 +41,7 @@ public class AnimUpdater : MonoBehaviour
         anim.SetBool("down", false);
         anim.SetBool("left", false);
         anim.SetBool("right", false);
-        Debug.Log("[KEK] direction: " + curr_direction);
+        //Debug.Log("[KEK] direction: " + curr_direction);
 
         switch (curr_direction)
         {

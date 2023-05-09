@@ -28,6 +28,8 @@ public class PlayerController : NetworkBehaviour
 
     private AnimUpdater animUpdater;
 
+    public int _bomb_radius = 1;
+
     public enum Direction
     {
         Up = 1,
@@ -150,7 +152,7 @@ public class PlayerController : NetworkBehaviour
 
         if (context.action.triggered && context.action.ReadValue<float>() != 0 && context.action.phase == InputActionPhase.Performed)
         {
-            int radius = 1;
+            int radius = _bomb_radius;
             // TODO Check whether there's already a bomb in place
             if (IsServer)
             {
@@ -206,6 +208,15 @@ public class PlayerController : NetworkBehaviour
     public void killPlayer()
     {
         animUpdater.animPlayerDead();
+    }
+
+    public void increaseRadiusItem(bool used)
+    {
+        if (!used)
+        {
+            _bomb_radius++;
+        }
+        
     }
 }
     

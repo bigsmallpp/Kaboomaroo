@@ -23,12 +23,14 @@ public class PlayerController : NetworkBehaviour
     private NetworkVariable<float> _speedNetworked = new NetworkVariable<float>(3.0f, 
                                                     NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+    [SerializeField]
+    private NetworkVariable<int> _bombRadius = new NetworkVariable<int>(1,
+                                                    NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
     [Header("Bomb Prefab")]
     [SerializeField] private GameObject _prefBomb;
 
     private AnimUpdater animUpdater;
-
-    public int _bomb_radius = 1;
 
     public enum Direction
     {
@@ -152,7 +154,7 @@ public class PlayerController : NetworkBehaviour
 
         if (context.action.triggered && context.action.ReadValue<float>() != 0 && context.action.phase == InputActionPhase.Performed)
         {
-            int radius = _bomb_radius;
+            int radius = _bombRadius.Value;
             // TODO Check whether there's already a bomb in place
             if (IsServer)
             {
@@ -214,7 +216,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (!used)
         {
-            _bomb_radius++;
+            _bombRadius.Value++;
         }
         
     }

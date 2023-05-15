@@ -14,6 +14,7 @@ public class Bomb : NetworkBehaviour
     private TileManager _tileManager = null;
     private GameObject _owner = null;
     private bool _ignoreCollisionWithPlayer = true;
+    private int _radiusLocal = 1;
 
     [Header("Explosion Prefab")]
     [SerializeField] private GameObject _prefExplosion;
@@ -23,6 +24,7 @@ public class Bomb : NetworkBehaviour
         if (IsServer)
         {
             _tileManager = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();
+            _radius.Value = _radiusLocal;
         }
         else
         {
@@ -35,10 +37,7 @@ public class Bomb : NetworkBehaviour
 
     public void SetRadius(int radius)
     {
-        if (IsServer)
-        {
-            _radius.Value = radius;
-        }
+        _radiusLocal = radius;
     }
 
     public void SetTimer(float timer)
@@ -77,7 +76,8 @@ public class Bomb : NetworkBehaviour
             { Vector2.down, new List<Vector2>() },
             { Vector2.left, new List<Vector2>() },
         };
-        
+
+        Debug.LogError(_radius.Value);
         foreach (Vector2 direction in _hitDirections)
         {
             for (int radius = 1; radius <= _radius.Value; radius++)

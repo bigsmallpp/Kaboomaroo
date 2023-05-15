@@ -3025,6 +3025,79 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!1001 &279111804
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -1219484676288682279, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2082622132
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 242269868944941122, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 961232985572299660, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_Name
+      value: Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 961232985572299660, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d3bf31b2c435a545881e6f6881a5ecc, type: 3}
 --- !u!1001 &411278895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3143,7 +3216,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 7.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -5287,6 +5360,8 @@ MonoBehaviour:
   _colliding: 0
   _directionNetworked:
     m_InternalValue: {x: 0, y: 0}
+  _bombRadius:
+    m_InternalValue: 1
   _prefBomb: {fileID: 7704387215618436441, guid: 06ff19b1dc9d039478a34b7fe324ba75, type: 3}
 --- !u!58 &4828621811479462004
 CircleCollider2D:

@@ -128,6 +128,7 @@ public class Explosion : NetworkBehaviour
             col.gameObject.GetComponent<PlayerController>().DisableControls();
             col.gameObject.GetComponent<PlayerController>().killPlayer();
             //col.gameObject.GetComponent<NetworkObject>().Despawn();
+            //TODO: col.gameObject.GetComponent<PlayerController>.SetSpeed(0.0f);
             ulong client_id = col.gameObject.GetComponent<NetworkObject>().OwnerClientId;
             GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>().RPC_SwitchToDeathMessageClientRPC(client_id);
         }

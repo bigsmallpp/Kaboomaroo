@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db11a2d58b985534e9c2571e29c46050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileIndestructible: {fileID: 11400000, guid: a75f7753e943c574a856eb75a8bba688, type: 2}
-  _tileDestructible: {fileID: 11400000, guid: 1c471565be57c4d458c1c467d07bb483, type: 2}
+  _tileIndestructible: {fileID: 11400000, guid: 9363c239907b12c48a25bee9ae1d2c52, type: 2}
+  _tileDestructible: {fileID: 11400000, guid: 324c57e6b34b02c48ab12ae9206ad7fb, type: 2}
   _mapIndestructible: {fileID: 0}
   _mapDestructible: {fileID: 0}
 --- !u!114 &1742332978192324531

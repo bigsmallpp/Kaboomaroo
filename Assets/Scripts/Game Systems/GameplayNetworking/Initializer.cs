@@ -10,7 +10,7 @@ public class Initializer : MonoBehaviour
     [SerializeField] private GameMenuManager _gameMenuManager;
     [SerializeField] private PlayerSpawner _playerSpawner;
     [SerializeField] private TileManager _tileManager;
-    [SerializeField] private NetworkedGameMenus _networkedMenuVaribales;
+    [SerializeField] private NetworkedGameMenus _networkedMenuVariables;
     [SerializeField] private ItemSpawner _itemSpawner;
 
     [Header("Prefabs")]
@@ -28,13 +28,15 @@ public class Initializer : MonoBehaviour
         if (NetworkManager.Singleton.IsServer == false)
         {
             _playerSpawner = GameObject.FindWithTag("PlayerSpawner").GetComponent<PlayerSpawner>();
-            _networkedMenuVaribales = GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>();
+            Debug.Log("Try to get NetworkedMenuManager spawner");
+            // _networkedMenuVariables = GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>();
             _gameMenuManager.GetComponent<GameMenuManager>().InitializePreGameEvents(_playerSpawner);
             _gameMenuManager.InitializeConnectedPlayers(_playerSpawner);
-            _gameMenuManager.InitializeInGameEvents(_networkedMenuVaribales);
+            // _gameMenuManager.InitializeInGameEvents(_networkedMenuVariables);
 
             _tileManager = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();
-            _itemSpawner = GameObject.FindWithTag("ItemSpawner").GetComponent<ItemSpawner>();
+            Debug.Log("Try to get item spawner");
+            // _itemSpawner = GameObject.FindWithTag("ItemSpawner").GetComponent<ItemSpawner>();
         }
         else
         {
@@ -45,7 +47,6 @@ public class Initializer : MonoBehaviour
             player_spawner.GetComponent<NetworkObject>().Spawn();
 
             GameObject item_spawner = Instantiate(_prefItemSpawner);
-
             _itemSpawner = item_spawner.GetComponent<ItemSpawner>();
             item_spawner.GetComponent<NetworkObject>().Spawn();
 
@@ -54,13 +55,13 @@ public class Initializer : MonoBehaviour
             tile_manager.GetComponent<NetworkObject>().Spawn();
 
             GameObject networked_menu_vars = Instantiate(_prefNetworkedMenuVariables);
-            _networkedMenuVaribales = networked_menu_vars.GetComponent<NetworkedGameMenus>();
-            _gameMenuManager.InitializeInGameEvents(_networkedMenuVaribales);
+            _networkedMenuVariables = networked_menu_vars.GetComponent<NetworkedGameMenus>();
+            _gameMenuManager.InitializeInGameEvents(_networkedMenuVariables);
             networked_menu_vars.GetComponent<NetworkObject>().Spawn();
         }
         
         _tileManager.SetTileMaps(_tilesDestructible, _tilesIndestructible);
-        _itemSpawner.setTileMap(_tilesDestructible, _tilesIndestructible);
-        _itemSpawner.initItems();
+        //_itemSpawner.setTileMap(_tilesDestructible, _tilesIndestructible);
+        //_itemSpawner.initItems();
     }
 }

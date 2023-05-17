@@ -135,7 +135,17 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 1.0.2
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 876771370139896153, guid: 61d4c79f3dfa12d4b8efd0e91c69d509, type: 2}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -758,11 +768,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 1
-  cloudProjectId: 0f344a3b-e2e9-43eb-b81d-1255aae11143
+  cloudProjectId: ad5a984d-bec2-41c4-ac65-e673c4113e86
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Kaboomeroo
-  organizationId: bigsmallpp
+  projectName: ST - Kaboomaroo (1)
+  organizationId: officialhevi
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

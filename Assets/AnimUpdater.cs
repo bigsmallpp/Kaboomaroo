@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class AnimUpdater : MonoBehaviour
+public class AnimUpdater : NetworkBehaviour
 {
 
     private Animator anim;

@@ -220,5 +220,11 @@ public class PlayerController : NetworkBehaviour
         }
         
     }
+
+    public void setSpeed(float new_speed)
+    {
+        speed = new_speed;
+        rigidbody_player.velocity = direction * speed;
+    }
 }
     

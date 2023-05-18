@@ -29,14 +29,14 @@ public class Initializer : MonoBehaviour
         {
             _playerSpawner = GameObject.FindWithTag("PlayerSpawner").GetComponent<PlayerSpawner>();
             Debug.Log("Try to get NetworkedMenuManager spawner");
-            // _networkedMenuVariables = GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>();
+            _networkedMenuVariables = GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>();
             _gameMenuManager.GetComponent<GameMenuManager>().InitializePreGameEvents(_playerSpawner);
             _gameMenuManager.InitializeConnectedPlayers(_playerSpawner);
-            // _gameMenuManager.InitializeInGameEvents(_networkedMenuVariables);
+            _gameMenuManager.InitializeInGameEvents(_networkedMenuVariables);
 
             _tileManager = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();
             Debug.Log("Try to get item spawner");
-            // _itemSpawner = GameObject.FindWithTag("ItemSpawner").GetComponent<ItemSpawner>();
+            _itemSpawner = GameObject.FindWithTag("ItemSpawner").GetComponent<ItemSpawner>();
         }
         else
         {
@@ -61,7 +61,7 @@ public class Initializer : MonoBehaviour
         }
         
         _tileManager.SetTileMaps(_tilesDestructible, _tilesIndestructible);
-        //_itemSpawner.setTileMap(_tilesDestructible, _tilesIndestructible);
-        //_itemSpawner.initItems();
+        _itemSpawner.setTileMap(_tilesDestructible, _tilesIndestructible);
+        _itemSpawner.initItems();
     }
 }

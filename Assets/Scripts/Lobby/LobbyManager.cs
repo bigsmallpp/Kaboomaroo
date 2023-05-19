@@ -46,7 +46,10 @@ public class LobbyManager : MonoBehaviour
         "Graceful Gorilla",
         "Happy Hippo",
         "Dreadful Doggo",
-        "Amazing Ape"
+        "Amazing Ape",
+        "Hectic Harald",
+        "Risky Ralf",
+        "Revengeful Ronald"
     };
     private async void Start()
     {

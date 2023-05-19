@@ -7,11 +7,15 @@ public class AnimUpdater : NetworkBehaviour
 {
 
     private Animator anim;
+    public int _skin_variant = 1;
+    private PlayerController _controller;
     // Start is called before the first frame update
     void Start()
     {
+        _controller = GetComponentInParent<PlayerController>();
         anim = GetComponent<Animator>();
-        setPlayerVariant(1); //Default Skin
+        _skin_variant = _controller.skin_variant.Value;
+        setPlayerVariant(_skin_variant); //Default Skin
         //TODO: Set Player skin at startup of lobby
     }
 

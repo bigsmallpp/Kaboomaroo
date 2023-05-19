@@ -27,6 +27,9 @@ public class PlayerController : NetworkBehaviour
     private NetworkVariable<int> _bombRadius = new NetworkVariable<int>(1,
                                                     NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+    [SerializeField]
+    public NetworkVariable<int> skin_variant = new NetworkVariable<int>(1);
+
     [Header("Bomb Prefab")]
     [SerializeField] private GameObject _prefBomb;
 

@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 4828621810537212897}
   - component: {fileID: 411278897}
   - component: {fileID: 4411318497091375598}
-  - component: {fileID: 519221412972165887}
+  - component: {fileID: 1809875319347477869}
   m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d0e4e1216ef0bf40b2edf13b2f929de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &519221412972165887
+--- !u!114 &1809875319347477869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -297,7 +297,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4828621810537212903}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cfcf11ec5d62454dbf264cf9cf032bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []

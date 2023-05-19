@@ -127,6 +127,7 @@ public class PlayerSpawner : NetworkBehaviour
         foreach (ulong client in ids)
         {
             GameObject player = Instantiate(_playerPrefab, _spawnPoints[index], Quaternion.identity);
+            player.GetComponent<PlayerController>().skin_variant.Value = index + 1;
             player.GetComponent<NetworkObject>().SpawnAsPlayerObject(client);
             player.GetComponent<PlayerController>().DisableControls();
             onCountdownOver.AddListener(player.GetComponent<PlayerController>().EnableControls);

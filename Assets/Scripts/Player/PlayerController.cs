@@ -67,7 +67,7 @@ public class PlayerController : NetworkBehaviour
 
         rigidbody_player.velocity = direction * speed;
         
-        if(base.IsOwner)
+        if(IsOwner)
         {
             animUpdater.updateAnim(curr_direction);
         }

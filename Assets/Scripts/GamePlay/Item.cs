@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class Item : NetworkBehaviour
 {
-    private int _id = 0;
+    public int _id = 0;
     private ItemSpawner spawner;
     private bool _used = false;
     void Start()

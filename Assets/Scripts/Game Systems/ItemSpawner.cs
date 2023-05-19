@@ -11,7 +11,14 @@ public class ItemSpawner : NetworkBehaviour
     [SerializeField] private Tilemap _tilesIndestructible;
     [SerializeField] private Item _prefItem;
     [SerializeField] public Item[] items;
-    private Vector3Int[] positions;
+    private NetworkVariable<Vector2> _position1 = new NetworkVariable<Vector2>(new Vector2(0, 0),
+                                                    NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<Vector2> _position2 = new NetworkVariable<Vector2>(new Vector2(0, 0),
+                                                    NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<Vector2> _position3 = new NetworkVariable<Vector2>(new Vector2(0, 0),
+                                                    NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<Vector2> _position4 = new NetworkVariable<Vector2>(new Vector2(0, 0),
+                                                    NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     private void Awake()
     {
@@ -25,101 +32,119 @@ public class ItemSpawner : NetworkBehaviour
     }
     public void initItems()
     {
-        positions = new Vector3Int[_num_items];
         if (IsServer)
         {
             calcPositions();
-            items[0] = Instantiate(_prefItem, positions[0], Quaternion.identity);
-            items[1] = Instantiate(_prefItem, positions[1], Quaternion.identity);
-            items[2] = Instantiate(_prefItem, positions[2], Quaternion.identity);
-            items[3] = Instantiate(_prefItem, positions[3], Quaternion.identity);
-            items[0].setId(0); // id = index
-            items[1].setId(1);
-            items[2].setId(2);
-            items[3].setId(3);
-            SpawnItemsClientRpc(positions);
         }
+
+        items[0] = Instantiate(_prefItem, _position1.Value, Quaternion.identity);
+        items[1] = Instantiate(_prefItem, _position2.Value, Quaternion.identity);
+        items[2] = Instantiate(_prefItem, _position3.Value, Quaternion.identity);
+        items[3] = Instantiate(_prefItem, _position4.Value, Quaternion.identity);
+        items[0].setId(0);
+        items[1].setId(1);
+        items[2].setId(2);
+        items[3].setId(3);
+        //SpawnItemsClientRpc(_position1.Value);
     }
 
     public void calcPositions()
     {
         BoundsInt bounds = _tilesIndestructible.cellBounds;
-
-        positions[0] = getRandomPositionForItem(bounds.xMin, 0, 0, bounds.yMax);
-        positions[1] = getRandomPositionForItem(0, bounds.xMax, 0, bounds.yMax);
-        positions[2] = getRandomPositionForItem(bounds.xMin, 0, bounds.yMin, 0);
-        positions[3] = getRandomPositionForItem(0, bounds.xMax, bounds.yMin, 0);
+        _position1.Value = getRandomPositionForItem(bounds.xMin, 0, 0, bounds.yMax);
+        _position2.Value = getRandomPositionForItem(0, bounds.xMax, 0, bounds.yMax);
+        _position3.Value = getRandomPositionForItem(bounds.xMin, 0, bounds.yMin, 0);
+        _position4.Value = getRandomPositionForItem(0, bounds.xMax, bounds.yMin, 0);
     }
     [ClientRpc]
-    private void SpawnItemsClientRpc(Vector3Int[] pos)
+    private void SpawnItemsClientRpc(Vector2 pos)
     {
         if (IsServer)
         {
             return;
         }
-        items[0] = Instantiate(_prefItem, pos[0], Quaternion.identity);
-        items[1] = Instantiate(_prefItem, pos[1], Quaternion.identity);
-        items[2] = Instantiate(_prefItem, pos[2], Quaternion.identity);
-        items[3] = Instantiate(_prefItem, pos[3], Quaternion.identity);
-        items[0].setId(0);
-        items[1].setId(1);
-        items[2].setId(2);
-        items[3].setId(3);
+        Instantiate(_prefItem, pos, Quaternion.identity);
+        Debug.Log("Init item at pos: " + pos);
     }
-    private Vector3Int getRandomPos(int xMin, int xMax, int yMin, int yMax, int z)
+
+    [ClientRpc]
+    private void SpawnItemAtPositionClientRpc(Vector3Int pos)
     {
-        Vector3Int pos = Vector3Int.zero;
+        if (IsServer)
+        {
+            return;
+        }
+
+        Vector3Int position = new Vector3Int(pos.x, pos.y, 0);
+        Instantiate(_prefItem, position, Quaternion.identity);
+        Debug.Log("Spawned item at position: " + position.x + ", " + position.y);
+    }
+    private Vector2Int getRandomPos(int xMin, int xMax, int yMin, int yMax)
+    {
+        Vector2Int pos = Vector2Int.zero;
 
         pos.x = Random.Range(xMin, xMax);
         pos.y = Random.Range(yMin, yMax);
-        pos.z = z;
 
         return pos;
     }
 
-    private Vector3Int getRandomPositionForItem(int xMin, int xMax, int yMin, int yMax)
+    private Vector2Int getRandomPositionForItem(int xMin, int xMax, int yMin, int yMax)
     {
         TileBase randTile = null;
-        Vector3Int randPos = Vector3Int.zero;
+        Vector2Int randPos = Vector2Int.zero;
         while (randTile == null)
         {
-            randPos = getRandomPos(xMin, xMax, yMin, yMax, _tilesDestructible.cellBounds.z);
-            randTile = _tilesDestructible.GetTile(randPos);
+            randPos = getRandomPos(xMin, xMax, yMin, yMax);
+            Vector3Int tilePos = new Vector3Int(randPos.x, randPos.y, _tilesDestructible.cellBounds.z);
+            randTile = _tilesDestructible.GetTile(tilePos);
         }
         return randPos;
     }
 
     public void deleteItem(int index)
     {
-        /*if (IsServer)
+        if (items[index] == null)
         {
-            Destroy(items[index]);
-            removeItemClientRPC(index);
-        }*/
-        if (items[index] != null)
-        {
-            Debug.Log("Delete item: " + index);
-            Destroy(items[index].gameObject);
-            items[index] = null;
+            Debug.Log("No item found with index: " + index);  
         }
-        else
-        {
-            Debug.Log("No item found with index: " + index);
-        }
-        
+
+        Debug.Log("Delete item: " + index);
+        Destroy(items[index].gameObject);
+        items[index] = null;
+
+        removeItemClientRPC(index);
+        removeItemServerRPC(index);
     }
 
     [ClientRpc]
     private void removeItemClientRPC(int index)
     {
-        if (items[index] != null)
+        if (IsServer)
         {
-            Destroy(items[index].gameObject);
-            items[index] = null;
+            return;
         }
-        else
+
+        if (items[index] == null)
         {
             Debug.Log("No item found with index: " + index);
+            return;
         }
+
+        Destroy(items[index].gameObject);
+        items[index] = null;
+    }
+
+    [ServerRpc]
+    private void removeItemServerRPC(int index)
+    {
+        if (items[index] == null)
+        {
+            Debug.Log("No item found with index: " + index);
+            return;
+        }
+
+        Destroy(items[index].gameObject);
+        items[index] = null;
     }
 }

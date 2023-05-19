@@ -28,14 +28,12 @@ public class Initializer : MonoBehaviour
         if (NetworkManager.Singleton.IsServer == false)
         {
             _playerSpawner = GameObject.FindWithTag("PlayerSpawner").GetComponent<PlayerSpawner>();
-            Debug.Log("Try to get NetworkedMenuManager spawner");
             _networkedMenuVariables = GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>();
             _gameMenuManager.GetComponent<GameMenuManager>().InitializePreGameEvents(_playerSpawner);
             _gameMenuManager.InitializeConnectedPlayers(_playerSpawner);
             _gameMenuManager.InitializeInGameEvents(_networkedMenuVariables);
 
             _tileManager = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();
-            Debug.Log("Try to get item spawner");
             _itemSpawner = GameObject.FindWithTag("ItemSpawner").GetComponent<ItemSpawner>();
         }
         else

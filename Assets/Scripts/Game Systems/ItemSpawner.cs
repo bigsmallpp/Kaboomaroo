@@ -56,7 +56,7 @@ public class ItemSpawner : NetworkBehaviour
         _position3.Value = getRandomPositionForItem(bounds.xMin, 0, bounds.yMin, 0);
         _position4.Value = getRandomPositionForItem(0, bounds.xMax, bounds.yMin, 0);
     }
-    [ClientRpc]
+    /*[ClientRpc]
     private void SpawnItemsClientRpc(Vector2 pos)
     {
         if (IsServer)
@@ -65,9 +65,9 @@ public class ItemSpawner : NetworkBehaviour
         }
         Instantiate(_prefItem, pos, Quaternion.identity);
         Debug.Log("Init item at pos: " + pos);
-    }
+    }*/
 
-    [ClientRpc]
+    /*[ClientRpc]
     private void SpawnItemAtPositionClientRpc(Vector3Int pos)
     {
         if (IsServer)
@@ -78,7 +78,7 @@ public class ItemSpawner : NetworkBehaviour
         Vector3Int position = new Vector3Int(pos.x, pos.y, 0);
         Instantiate(_prefItem, position, Quaternion.identity);
         Debug.Log("Spawned item at position: " + position.x + ", " + position.y);
-    }
+    }*/
     private Vector2Int getRandomPos(int xMin, int xMax, int yMin, int yMax)
     {
         Vector2Int pos = Vector2Int.zero;
@@ -109,17 +109,25 @@ public class ItemSpawner : NetworkBehaviour
             Debug.Log("No item found with index: " + index);  
         }
 
-        Debug.Log("Delete item: " + index);
         Destroy(items[index].gameObject);
         items[index] = null;
 
-        removeItemClientRPC(index);
-        removeItemServerRPC(index);
+        if (IsServer)
+        {
+            removeItemClientRPC(index);
+        }
+        else
+        {
+            removeItemServerRPC(index);
+        }
+        
+        
     }
 
     [ClientRpc]
     private void removeItemClientRPC(int index)
     {
+        //Debug.Log("Enter item Client RPC: " + index);
         if (IsServer)
         {
             return;
@@ -133,11 +141,13 @@ public class ItemSpawner : NetworkBehaviour
 
         Destroy(items[index].gameObject);
         items[index] = null;
+        //Debug.Log("Destroy item Client RPC: " + index);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void removeItemServerRPC(int index)
     {
+        //Debug.Log("Enter item Server RPC: " + index);
         if (items[index] == null)
         {
             Debug.Log("No item found with index: " + index);
@@ -146,5 +156,6 @@ public class ItemSpawner : NetworkBehaviour
 
         Destroy(items[index].gameObject);
         items[index] = null;
+        //Debug.Log("Destroy item Server RPC: " + index);
     }
 }

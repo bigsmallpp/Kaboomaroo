@@ -15,6 +15,7 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField] private float _countdownLength;
     [SerializeField] private float _timerForPlayersToConnect = 10.0f;
     [SerializeField] private bool _gameStarted = false;
+    [SerializeField] private bool _gameFinished = false;
 
     [Header("Player Connections (Networked Variables)")]
     [SerializeField] private NetworkVariable<int> _playersInLobby = new NetworkVariable<int>();
@@ -58,6 +59,10 @@ public class PlayerSpawner : NetworkBehaviour
         ReduceTimerForPlayersToConnect();
         if(_gameStarted)
             CheckPlayerAliveStatus();
+        if (!_gameStarted && _gameFinished)
+        {
+            StartCoroutine(returnAllPlayersToMenu());
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -202,8 +207,19 @@ public class PlayerSpawner : NetworkBehaviour
             lastManStanding.GetComponent<PlayerController>().DisableControls();
             Debug.Log("Last man Standing!");
             Debug.Log("Player: " + lastManStanding.GetComponent<NetworkObject>().OwnerClientId + " won!");
+            _gameFinished = true;
             _gameStarted = false;
             GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>().RPC_SwitchToWinnerMessageClientRPC(lastManStanding.GetComponent<NetworkObject>().OwnerClientId);
+            //NetworkManager.Singleton.DisconnectClient(lastManStanding.GetComponent<NetworkObject>().OwnerClientId);
+        }
+    }
+
+    private IEnumerator returnAllPlayersToMenu()
+    {
+        yield return new WaitForSecondsRealtime(3);
+        foreach(var player in _players)
+        {
+            player.Item2.gameObject.GetComponent<PlayerController>().RPC_gameFinishedClientRPC();
         }
     }
 }

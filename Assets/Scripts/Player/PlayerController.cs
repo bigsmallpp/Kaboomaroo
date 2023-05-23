@@ -244,5 +244,13 @@ public class PlayerController : NetworkBehaviour
     {
         return _alive;
     }
+
+
+    [ClientRpc]
+    public void RPC_gameFinishedClientRPC()
+    {
+        SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
 }
     

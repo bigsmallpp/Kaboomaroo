@@ -2367,7 +2367,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 790203972}
   m_OnClick:
     m_PersistentCalls:
@@ -5391,3 +5391,8 @@ MonoBehaviour:
   _lobbyGridView: {fileID: 1156515391}
   _lobbyCode: {fileID: 1836204155}
   _buttonStartGame: {fileID: 2142380330}
+  _playerColors:
+  - {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.22891665, b: 1, a: 1}

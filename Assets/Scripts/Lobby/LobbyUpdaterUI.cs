@@ -15,6 +15,7 @@ public class LobbyUpdaterUI : MonoBehaviour
     [SerializeField] private GameObject _lobbyGridView;
     [SerializeField] private TextMeshProUGUI _lobbyCode;
     [SerializeField] private Button _buttonStartGame;
+    [SerializeField] private List<Color> _playerColors;
 
     private const int LOBBY_CODE_LENGTH = 6;
 
@@ -93,6 +94,7 @@ public class LobbyUpdaterUI : MonoBehaviour
         foreach (Player player in players)
         {
             _lobbyPlayers[player.Id].GetComponentInChildren<TextMeshProUGUI>().text = "P" + index.ToString();
+            _lobbyPlayers[player.Id].GetComponentInChildren<RawImage>().color = _playerColors[index - 1];
             index++;
         }
     }

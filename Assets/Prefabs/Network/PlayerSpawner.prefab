@@ -48,8 +48,13 @@ MonoBehaviour:
   _spawnPoints:
   - {x: 0, y: -4}
   - {x: 9, y: -4}
+  - {x: -9, y: -4}
+  - {x: -9, y: 4}
   _playerPrefab: {fileID: 4828621810131853550, guid: 740d0251b0329b94cbd077b55f457644, type: 3}
   _countdownLength: 3
+  _timerForPlayersToConnect: 10
+  _gameStarted: 0
+  _gameFinished: 0
   _playersInLobby:
     m_InternalValue: 0
   _connectedPlayers:

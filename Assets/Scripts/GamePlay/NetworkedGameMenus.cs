@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class NetworkedGameMenus : NetworkBehaviour
 {
     public UnityEventBool onShowDeathScreen;
+    public UnityEventBool onShowWinnerScreen;
     
     [ClientRpc]
     public void RPC_SwitchToDeathMessageClientRPC(ulong client_id)
@@ -17,5 +18,16 @@ public class NetworkedGameMenus : NetworkBehaviour
         }
         
         onShowDeathScreen.Invoke(true);
+    }
+
+    [ClientRpc]
+    public void RPC_SwitchToWinnerMessageClientRPC(ulong client_id)
+    {
+        if (client_id != NetworkManager.Singleton.LocalClientId)
+        {
+            return;
+        }
+
+        onShowWinnerScreen.Invoke(true);
     }
 }

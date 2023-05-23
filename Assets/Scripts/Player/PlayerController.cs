@@ -10,6 +10,7 @@ public class PlayerController : NetworkBehaviour
 {
     public Rigidbody2D rigidbody_player { get; private set; }
     public float speed = 3f;
+    public bool _alive = false;
 
     private CustomInput input = null;
     private Vector2 direction = Vector2.zero;
@@ -232,6 +233,16 @@ public class PlayerController : NetworkBehaviour
     {
         speed = new_speed;
         rigidbody_player.velocity = direction * speed;
+    }
+
+    public void setAliveStatus(bool isAlive)
+    {
+        _alive = isAlive;
+    }
+
+    public bool getAliveStatus()
+    {
+        return _alive;
     }
 }
     

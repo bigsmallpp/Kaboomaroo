@@ -14,6 +14,7 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private float _countdownLength;
     [SerializeField] private float _timerForPlayersToConnect = 10.0f;
+    [SerializeField] private bool _gameStarted = false;
 
     [Header("Player Connections (Networked Variables)")]
     [SerializeField] private NetworkVariable<int> _playersInLobby = new NetworkVariable<int>();
@@ -55,6 +56,8 @@ public class PlayerSpawner : NetworkBehaviour
     private void Update()
     {
         ReduceTimerForPlayersToConnect();
+        if(_gameStarted)
+            CheckPlayerAliveStatus();
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -98,7 +101,7 @@ public class PlayerSpawner : NetworkBehaviour
             onCountdownOver.Invoke();
             onCountdownTickDown.RemoveAllListeners();
             onCountdownOver.RemoveAllListeners();
-            
+            _gameStarted = true;
             // TODO Give Players Authority
         }
     }
@@ -117,6 +120,7 @@ public class PlayerSpawner : NetworkBehaviour
             _countdown.Value = _countdownLength - elapsed;
             yield return null;
         }
+
     }
 
     private void SpawnPlayers()
@@ -131,7 +135,7 @@ public class PlayerSpawner : NetworkBehaviour
             player.GetComponent<NetworkObject>().SpawnAsPlayerObject(client);
             player.GetComponent<PlayerController>().DisableControls();
             onCountdownOver.AddListener(player.GetComponent<PlayerController>().EnableControls);
-            
+            player.GetComponent<PlayerController>().setAliveStatus(true);
             _players.Add(new Tuple<ulong, GameObject>(client, player));
             
             index++;
@@ -177,6 +181,29 @@ public class PlayerSpawner : NetworkBehaviour
             _timerForPlayersToConnect = 0.0f;
             // Force Game Start
             onAllPlayersConnected.Invoke();
+        }
+    }
+
+    private void CheckPlayerAliveStatus()
+    {
+        int count = 0;
+        GameObject lastManStanding = null;
+        foreach(var player in _players)
+        {
+            if(player.Item2.gameObject.GetComponent<PlayerController>().getAliveStatus() == true)
+            {
+                count++;
+                lastManStanding = player.Item2.gameObject;
+            }
+        }
+        if(count == 1)
+        {
+            //ToDo: Show End Screen! Return to Lobby Screen after XX Seconds!
+            lastManStanding.GetComponent<PlayerController>().DisableControls();
+            Debug.Log("Last man Standing!");
+            Debug.Log("Player: " + lastManStanding.GetComponent<NetworkObject>().OwnerClientId + " won!");
+            _gameStarted = false;
+            GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>().RPC_SwitchToWinnerMessageClientRPC(lastManStanding.GetComponent<NetworkObject>().OwnerClientId);
         }
     }
 }

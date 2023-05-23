@@ -14,7 +14,8 @@ public class GameMenuManager : MonoBehaviour
     [Header("Variables/Texts")] 
     [SerializeField] private TextMeshProUGUI _textConnectedPlayers;
     [SerializeField] private TextMeshProUGUI _textYouDied;
-    
+    [SerializeField] private TextMeshProUGUI _textYouWon;
+
     private void SwitchToCountdown()
     {
         _textConnectedPlayers.text = "3.0";
@@ -46,6 +47,7 @@ public class GameMenuManager : MonoBehaviour
     public void InitializeInGameEvents(NetworkedGameMenus menus)
     {
         menus.onShowDeathScreen.AddListener(SetDeathMessageActive);
+        menus.onShowWinnerScreen.AddListener(SetWinMessageActive);
     }
 
     public void SwitchToIngameMenu()
@@ -63,5 +65,10 @@ public class GameMenuManager : MonoBehaviour
     public void SetDeathMessageActive(bool val)
     {
         _textYouDied.gameObject.SetActive(val);
+    }
+
+    public void SetWinMessageActive(bool val)
+    {
+        _textYouWon.gameObject.SetActive(val);
     }
 }

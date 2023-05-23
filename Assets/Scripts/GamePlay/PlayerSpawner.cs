@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Networking.Transport;
 using Unity.Services.Lobbies.Models;
 using UnityEditor;
 using UnityEngine;
@@ -221,5 +222,12 @@ public class PlayerSpawner : NetworkBehaviour
         {
             player.Item2.gameObject.GetComponent<PlayerController>().RPC_gameFinishedClientRPC();
         }
+
+        if (IsServer)
+        {
+            NetworkManager.Singleton.Shutdown();
+            SceneManager.LoadScene("MainMenuDisconnect", LoadSceneMode.Single);
+        }
     }
+    
 }

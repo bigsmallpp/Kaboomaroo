@@ -249,8 +249,10 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     public void RPC_gameFinishedClientRPC()
     {
-        SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        // SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        NetworkManager.Singleton.Shutdown();
+        SceneManager.LoadScene("MainMenuDisconnect", LoadSceneMode.Single);
     }
 }
     

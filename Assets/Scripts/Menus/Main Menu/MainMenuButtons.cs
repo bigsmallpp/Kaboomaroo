@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -19,7 +20,21 @@ public class MainMenuButtons : MonoBehaviour
     [Header("The connecting screen")]
     [SerializeField] private GameObject _connectingToLobbyScreen;
     
+    [Header("The Error screen")]
+    [SerializeField] private GameObject _errorScreen;
+    [SerializeField] private Button _errorRetry;
+    
+    [Header("The Status")]
+    [SerializeField] private TextMeshProUGUI _connectionStatus;
+    
     private CustomInput _input;
+    
+    public enum CONNECTION_STATUS
+    {
+        CONNECTED,
+        RETRYING,
+        DISCONNECTED
+    }
 
     private void Awake()
     {
@@ -137,5 +152,54 @@ public class MainMenuButtons : MonoBehaviour
         {
             EmulateBackArrow();
         }
+    }
+
+    public void SetAndShowErrorMessage(string error)
+    {
+        _errorScreen.SetActive(true);
+        _errorScreen.GetComponentInChildren<TextMeshProUGUI>().text = error;
+    }
+
+    public void HideAndResetErrorMessage()
+    {
+        _errorScreen.SetActive(false);
+        _errorScreen.GetComponentInChildren<TextMeshProUGUI>().text = String.Empty;
+    }
+
+    public void SetStatusText(CONNECTION_STATUS current_state)
+    {
+        switch (current_state)
+        {
+            case CONNECTION_STATUS.CONNECTED:
+                _connectionStatus.text = "Connected";
+                _connectionStatus.color = Color.green;
+                break;
+            
+            case CONNECTION_STATUS.RETRYING:
+                _connectionStatus.text = "Retrying...";
+                _connectionStatus.color = Color.yellow;
+                break;
+            
+            case CONNECTION_STATUS.DISCONNECTED:
+                _connectionStatus.text = "Disconnected";
+                _connectionStatus.color = Color.red;
+                break;
+            
+            default:
+                break;
+        }
+    }
+
+    public void RetryConnection()
+    {
+        _errorRetry.interactable = false;
+        LobbyManager.Instance.RetryAuthLogin("No Internet Connection");
+        StartCoroutine(DelayRetryButton());
+    }
+
+    IEnumerator DelayRetryButton()
+    {
+        yield return new WaitForSecondsRealtime(5);
+        _errorRetry.interactable = true;
     }
 }

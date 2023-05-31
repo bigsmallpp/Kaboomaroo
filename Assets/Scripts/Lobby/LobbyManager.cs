@@ -12,6 +12,7 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
@@ -118,12 +119,16 @@ public class LobbyManager : MonoBehaviour
 
     private void SignedIn()
     {
-        Debug.Log("Signed In Player " + AuthenticationService.Instance.PlayerId);
+        if (!_joinedGame)
+        {
+            ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SetStatusText(MainMenuButtons.CONNECTION_STATUS.CONNECTED);
+            ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().HideAndResetErrorMessage();
+        }
     }
 
     private void SignInFailed(RequestFailedException e)
     {
-        Debug.LogError("e");
+        RetryAuthLogin(e.Message);
     }
     
     public async Task<string> CreateLobby(string name, int max_players)
@@ -151,6 +156,7 @@ public class LobbyManager : MonoBehaviour
         catch (LobbyServiceException l)
         {
             Debug.LogWarning(l);
+            HandleLobbyServiceException(l);
             return l.Message;
         }
     }
@@ -230,7 +236,7 @@ public class LobbyManager : MonoBehaviour
         }
         catch (LobbyServiceException l)
         {
-            Debug.LogWarning(l);
+            HandleLobbyServiceException(l);
             return l.Message;
         }
     }
@@ -257,15 +263,6 @@ public class LobbyManager : MonoBehaviour
         catch (LobbyServiceException l)
         {
             HandleLobbyServiceException(l);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        // TODO Doesnt work properly on force quit
-        if (_instance == this)
-        {
-            RemovePlayerFromConnectedLobby();
         }
     }
 
@@ -396,6 +393,21 @@ public class LobbyManager : MonoBehaviour
             _connectedLobby = null;
             ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SwitchToMainMenu();
         }
+        else if (l.Reason == LobbyExceptionReason.NetworkError)
+        {
+            Debug.Log("Network Error");
+            _connectedLobby = null;
+            if (!_joinedGame)
+            {
+                ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SetAndShowErrorMessage(l.Message);
+                ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SwitchToMainMenu();
+                SignInFailed(l);
+            }
+            else
+            {
+                SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+            }
+        }
         else
         {
             Debug.LogError("Unhandled Exception Case!");
@@ -518,5 +530,31 @@ public class LobbyManager : MonoBehaviour
 
         _connectedLobby = null;
         SetJoinedGame(false);
+    }
+
+    public void RetryAuthLogin(string error)
+    {
+        if (!_joinedGame)
+        {
+            ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SetStatusText(MainMenuButtons.CONNECTION_STATUS.RETRYING);
+            ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SwitchToMainMenu();
+            ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SetAndShowErrorMessage(error);
+        }
+        
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            Debug.LogError("Internet Check Failed");
+            ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SetStatusText(MainMenuButtons.CONNECTION_STATUS.DISCONNECTED);
+            return;
+        }
+        
+        Debug.LogError("Internet Check Passed");
+        RetryLogin();
+    }
+
+    private async void RetryLogin()
+    {
+        AuthenticationService.Instance.SignOut();
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 }

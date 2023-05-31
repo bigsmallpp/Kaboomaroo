@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    [SerializeField] private IPManager _ipManager;
     [SerializeField] private MainMenuButtons _menuButtons;
     [SerializeField] private LobbyUpdaterUI _lobbyUpdaterUI;
     
@@ -23,8 +22,6 @@ public class MenuManager : MonoBehaviour
             LobbyManager.Instance.SetJoinedGame(false);
             ManagerSystems.Instance.SetMenuManager(this);
         }
-        
-        StartCoroutine(WaitForInitAndSetIPAddress());
     }
 
     private void Awake()
@@ -36,16 +33,6 @@ public class MenuManager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    IEnumerator WaitForInitAndSetIPAddress()
-    {
-        while (_ipManager.GetIPStatus() != IPManager.IP_STATUS.SUCCESS)
-        {
-            yield return new WaitForSeconds(0.5f);
-        }
-        
-        _ipText.text = IP + _ipManager.GetIPAddress();
     }
 
     public void SetupLobbyScreen()

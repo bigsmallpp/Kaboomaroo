@@ -12,6 +12,7 @@ public class Initializer : MonoBehaviour
     [SerializeField] private TileManager _tileManager;
     [SerializeField] private NetworkedGameMenus _networkedMenuVariables;
     [SerializeField] private ItemSpawner _itemSpawner;
+    [SerializeField] private ConnectionHandler _connectionHandler;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject _prefPlayerSpawner;
@@ -61,5 +62,7 @@ public class Initializer : MonoBehaviour
         _tileManager.SetTileMaps(_tilesDestructible, _tilesIndestructible);
         _itemSpawner.setTileMap(_tilesDestructible, _tilesIndestructible);
         _itemSpawner.initItems();
+        
+        _connectionHandler.SetPlayerSpawner(_playerSpawner);
     }
 }

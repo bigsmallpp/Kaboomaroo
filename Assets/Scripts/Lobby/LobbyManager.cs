@@ -245,12 +245,13 @@ public class LobbyManager : MonoBehaviour
         return _connectedLobby != null && _connectedLobby.HostId == AuthenticationService.Instance.PlayerId;
     }
 
-    public async void RemovePlayerFromConnectedLobby()
+    public async void RemovePlayerFromConnectedLobby(string ID = "")
     {
         Debug.Log("Disconnecting Player...");
         try
         {
-            await LobbyService.Instance.RemovePlayerAsync(_connectedLobby.Id, AuthenticationService.Instance.PlayerId);
+            string id_to_remove = ID == "" ? AuthenticationService.Instance.PlayerId : ID;
+            await LobbyService.Instance.RemovePlayerAsync(_connectedLobby.Id, id_to_remove);
             _connectedLobby = null;
         }
         catch (LobbyServiceException l)
@@ -506,5 +507,16 @@ public class LobbyManager : MonoBehaviour
         };
 
         _connectedLobby = await LobbyService.Instance.UpdateLobbyAsync(_connectedLobby.Id, options);
+    }
+
+    public void InvalidateLobby()
+    {
+        if (_connectedLobby == null)
+        {
+            return;
+        }
+
+        _connectedLobby = null;
+        SetJoinedGame(false);
     }
 }

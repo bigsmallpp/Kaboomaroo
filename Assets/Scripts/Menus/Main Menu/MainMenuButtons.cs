@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class MainMenuButtons : MonoBehaviour
 {
@@ -73,26 +74,6 @@ public class MainMenuButtons : MonoBehaviour
 
         StartCoroutine(PlayConnectingAnimation());
     }
-
-    /*private void HandleBackButtonPress()
-    {
-        // For the Android App
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                EmulateBackArrow();
-            }
-        }
-        // For local debugging
-        else if (Application.platform == RuntimePlatform.WindowsEditor)
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                EmulateBackArrow();
-            }
-        }
-    }*/
 
     private void EmulateBackArrow()
     {

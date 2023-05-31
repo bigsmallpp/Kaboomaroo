@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Networking.Transport;
+using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
 using UnityEditor;
 using UnityEngine;
@@ -22,6 +23,7 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField] private NetworkVariable<int> _playersInLobby = new NetworkVariable<int>();
     [SerializeField] private NetworkVariable<int> _connectedPlayers = new NetworkVariable<int>();
     [SerializeField] private NetworkVariable<float> _countdown = new NetworkVariable<float>(3.0f);
+    [SerializeField] public NetworkVariable<ulong> _hostID = new NetworkVariable<ulong>(0);
 
     [Header("Unity Events")]
     public UnityEvent onAllPlayersConnected;
@@ -31,6 +33,7 @@ public class PlayerSpawner : NetworkBehaviour
 
     [Header("The Players")]
     [SerializeField] private List<Tuple<ulong, GameObject>> _players = new List<Tuple<ulong, GameObject>>();
+    [SerializeField] private List<Tuple<ulong, string>> _lobbyIDs = new List<Tuple<ulong, string>>();
 
     
     public override void OnNetworkSpawn()
@@ -46,12 +49,13 @@ public class PlayerSpawner : NetworkBehaviour
             onAllPlayersConnected.AddListener(RemoveRelayCode);
             _playersInLobby.Value = LobbyManager.Instance.GetConnectedPlayerCount();
             _connectedPlayers.Value += 1;
+            _hostID.Value = NetworkManager.Singleton.LocalClientId;
         }
         else
         {
             // UpdateConnectedPlayers(_playersInLobby.Value, _connectedPlayers.Value);
             // TODO check if game already running
-            RPC_CheckInPlayerServerRPC();
+            RPC_CheckInPlayerServerRPC(NetworkManager.Singleton.LocalClientId, AuthenticationService.Instance.PlayerId);
         }
     }
 
@@ -67,10 +71,11 @@ public class PlayerSpawner : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void RPC_CheckInPlayerServerRPC()
+    private void RPC_CheckInPlayerServerRPC(ulong clientID, string lobbyID)
     {
         Debug.Log("RPC Received");
         _connectedPlayers.Value += 1;
+        _lobbyIDs.Add(new Tuple<ulong, string>(clientID, lobbyID));
     }
 
     public void UpdateConnectedPlayers(int previous, int current)
@@ -151,8 +156,8 @@ public class PlayerSpawner : NetworkBehaviour
     public override void OnNetworkDespawn()
     {
         Debug.LogError("ON NETWORK DESPAWN CALLED");
-        NetworkManager.Singleton.Shutdown();
-        SceneManager.LoadScene("MainMenuDisconnect", LoadSceneMode.Single);
+        // NetworkManager.Singleton.Shutdown();
+        // SceneManager.LoadScene("MainMenuDisconnect", LoadSceneMode.Single);
     }
 
     public void RemoveRelayCode()
@@ -228,6 +233,57 @@ public class PlayerSpawner : NetworkBehaviour
             NetworkManager.Singleton.Shutdown();
             SceneManager.LoadScene("MainMenuDisconnect", LoadSceneMode.Single);
         }
+    }
+
+    public void RemovePlayer(ulong clientID)
+    {
+        Tuple<ulong, GameObject> player_to_remove = null;
+        foreach (Tuple<ulong, GameObject> player in _players)
+        {
+            if (player.Item1 == clientID)
+            {
+                player_to_remove = player;
+                if (player.Item2 != null)
+                {
+                    player.Item2.gameObject.GetComponent<PlayerController>().setAliveStatus(false);
+                }
+
+                break;
+            }
+        }
+
+        if (player_to_remove != null)
+        {
+            _players.Remove(player_to_remove);
+        }
+        
+        Tuple<ulong, string> lobby_entry_to_remove = null;
+        foreach (Tuple<ulong, string> player in _lobbyIDs)
+        {
+            if (player.Item1 == clientID)
+            {
+                lobby_entry_to_remove = player;
+                break;
+            }
+        }
+
+        if (lobby_entry_to_remove != null)
+        {
+            _lobbyIDs.Remove(lobby_entry_to_remove);
+        }
+    }
+
+    public string GetLobbyIdOfPlayer(ulong clientID)
+    {
+        foreach (Tuple<ulong, string> player in _lobbyIDs)
+        {
+            if (player.Item1 == clientID)
+            {
+                return player.Item2;
+            }
+        }
+
+        return string.Empty;
     }
     
 }

@@ -1,89 +1,83 @@
 {
-    "m_SelectedDeviceId": "e3cc6614",
+    "m_SelectedDeviceId": "baf8d5653085",
     "m_SelectedPackage": {
-        "deviceId": "e3cc6614",
+        "deviceId": "baf8d5653085",
         "name": "com.DefaultCompany.com.unity.template.mobile2D",
-        "processId": 3860,
+        "processId": 2361,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "baf8d5653085",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 7050,
+            "exited": true
+        },
+        {
+            "deviceId": "baf8d5653085",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 12006,
+            "exited": true
+        },
+        {
+            "deviceId": "baf8d5653085",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 16607,
+            "exited": true
+        },
+        {
+            "deviceId": "baf8d5653085",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 19382,
+            "exited": true
+        },
+        {
+            "deviceId": "baf8d5653085",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 23083,
+            "exited": true
+        },
+        {
+            "deviceId": "baf8d5653085",
             "name": "com.miui.home",
-            "processId": 3118,
+            "processId": 3041,
             "exited": false
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 20498,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 26496,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 1018,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 16706,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 20038,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 25910,
+            "processId": 27912,
             "exited": false
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 31209,
+            "processId": 31448,
             "exited": false
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 12120,
+            "processId": 2591,
             "exited": false
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 18201,
+            "processId": 9280,
             "exited": false
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 28435,
+            "processId": 20894,
             "exited": false
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 5005,
-            "exited": false
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 10319,
+            "processId": 2361,
             "exited": false
         },
         {

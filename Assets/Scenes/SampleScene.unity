@@ -701,7 +701,7 @@ MonoBehaviour:
     RecycleNetworkIds: 1
     NetworkIdRecycleDelay: 120
     RpcHashSize: 0
-    LoadSceneTimeOut: 120
+    LoadSceneTimeOut: 15
     SpawnTimeout: 1
     EnableNetworkLogs: 1
     OldPrefabList: []
@@ -738,7 +738,7 @@ MonoBehaviour:
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
   m_MaxConnectAttempts: 60
-  m_DisconnectTimeoutMS: 30000
+  m_DisconnectTimeoutMS: 5000
   ConnectionData:
     Address: 127.0.0.1
     Port: 7777
@@ -2110,8 +2110,8 @@ MonoBehaviour:
   _heartbeatElapsedTime: 0
   _heartbeatInterval: 20
   _lobbyUpdateElapsedTime: 0
-  _lobbyUpdateInterval: 1.75
-  _allowedIdleTime: 15
+  _lobbyUpdateInterval: 1.2
+  _allowedIdleTime: 11
 --- !u!1 &640024903
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,12 +2,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
+using Unity.Multiplayer.Tools.MetricTypes;
 
-public class QuitScript : MonoBehaviour
+public class QuitScript : NetworkBehaviour
 {
 
     // Reference to the LobbyManager singleton
     private LobbyManager lobbyManager;
+
+    private NetworkClient networkClient;
 
     private void Start()
     {
@@ -17,7 +20,7 @@ public class QuitScript : MonoBehaviour
 
     public void PerformButtonAction()
     {
-        
+
 
         // Remove the player from the lobby
         if (lobbyManager != null)
@@ -25,11 +28,15 @@ public class QuitScript : MonoBehaviour
             lobbyManager.RemovePlayerFromConnectedLobby();
         }
 
+        
+
         // Load the LobbyScene
         SceneManager.LoadScene("SampleScene");
 
-        // Shut down the NetworkManager
-        NetworkManager.Singleton.Shutdown();
+        ulong clientID = networkClient.ClientId;
+        NetworkManager.Singleton.DisconnectClient(clientID);
+
+
     }
 }
 

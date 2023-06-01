@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerSpawner : NetworkBehaviour
 {
+    public bool debugMode = false;
     [SerializeField] private List<Vector2> _spawnPoints;
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private float _countdownLength;
@@ -62,12 +63,16 @@ public class PlayerSpawner : NetworkBehaviour
     private void Update()
     {
         ReduceTimerForPlayersToConnect();
-        if(_gameStarted)
-            CheckPlayerAliveStatus();
-        if (!_gameStarted && _gameFinished)
+        if (!debugMode)
         {
-            StartCoroutine(returnAllPlayersToMenu());
+            if (_gameStarted)
+                CheckPlayerAliveStatus();
+            if (!_gameStarted && _gameFinished)
+            {
+                StartCoroutine(returnAllPlayersToMenu());
+            }
         }
+        
     }
 
     [ServerRpc(RequireOwnership = false)]

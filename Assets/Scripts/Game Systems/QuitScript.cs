@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
-using Unity.Multiplayer.Tools.MetricTypes;
 
 public class QuitScript : NetworkBehaviour
 {
@@ -28,14 +27,12 @@ public class QuitScript : NetworkBehaviour
             lobbyManager.RemovePlayerFromConnectedLobby();
         }
 
-        
-
         // Load the LobbyScene
         SceneManager.LoadScene("SampleScene");
 
-        ulong clientID = networkClient.ClientId;
+        ulong clientID = NetworkManager.Singleton.LocalClientId;
         NetworkManager.Singleton.DisconnectClient(clientID);
-
+        Debug.Log("Player Disconnected!");
 
     }
 }

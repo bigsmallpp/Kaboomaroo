@@ -21,7 +21,7 @@ public class LobbyManager : MonoBehaviour
     public static LobbyManager Instance => _instance;
     
     private Lobby _connectedLobby;
-    
+
     [Header("Heartbeat Variables")]
     [SerializeField] private float _heartbeatElapsedTime = 0.0f;
     [SerializeField] private float _heartbeatInterval = 20.0f;
@@ -250,7 +250,13 @@ public class LobbyManager : MonoBehaviour
         Debug.Log("Disconnecting Player...");
         try
         {
+            //debug.log("in try");
+            //ulong clientid = networkmanager.singleton.localclientid;
+            //debug.log("client found");
+            //playerspawner.despawnplayer(clientid);
+            //debug.log("spawner found");
             await LobbyService.Instance.RemovePlayerAsync(_connectedLobby.Id, AuthenticationService.Instance.PlayerId);
+            
             _connectedLobby = null;
         }
         catch (LobbyServiceException l)

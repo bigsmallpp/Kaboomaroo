@@ -1,9 +1,9 @@
 {
     "m_SelectedDeviceId": "baf8d5653085",
     "m_SelectedPackage": {
-        "deviceId": "baf8d5653085",
-        "name": "com.DefaultCompany.com.unity.template.mobile2D",
-        "processId": 11476,
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,80 +11,32 @@
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 7050,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 12006,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 16607,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 19382,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 23083,
-            "exited": true
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.miui.home",
-            "processId": 3041,
-            "exited": false
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 27912,
-            "exited": false
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 31448,
-            "exited": false
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 2591,
-            "exited": false
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 9280,
-            "exited": false
-        },
-        {
-            "deviceId": "baf8d5653085",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
             "processId": 20894,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
             "processId": 2361,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "baf8d5653085",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
             "processId": 11476,
-            "exited": false
+            "exited": true
+        },
+        {
+            "deviceId": "baf8d5653085",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 11840,
+            "exited": true
+        },
+        {
+            "deviceId": "baf8d5653085",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 26235,
+            "exited": true
         },
         {
             "deviceId": "e3cc6614",

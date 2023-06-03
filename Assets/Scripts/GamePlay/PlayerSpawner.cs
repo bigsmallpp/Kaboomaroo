@@ -197,6 +197,9 @@ public class PlayerSpawner : NetworkBehaviour
 
     private void CheckPlayerAliveStatus()
     {
+        // TODO Only for testing
+        return;
+        
         int count = 0;
         GameObject lastManStanding = null;
         foreach(var player in _players)

@@ -65,10 +65,28 @@ public class GameMenuManager : MonoBehaviour
     public void SetDeathMessageActive(bool val)
     {
         _textYouDied.gameObject.SetActive(val);
+        StartCoroutine(AnimatePostGameMessage(_textYouDied.gameObject));
     }
 
     public void SetWinMessageActive(bool val)
     {
         _textYouWon.gameObject.SetActive(val);
+        StartCoroutine(AnimatePostGameMessage(_textYouWon.gameObject));
+    }
+
+    IEnumerator AnimatePostGameMessage(GameObject text)
+    {
+        float target_size = text.GetComponent<TextMeshProUGUI>().fontSize;
+        text.GetComponent<TextMeshProUGUI>().fontSize = 0.0f;
+        float end = 1.0f;
+        float current_time = 0.0f;
+
+        while (current_time <= end)
+        {
+            float new_size = Mathf.Lerp(text.GetComponent<TextMeshProUGUI>().fontSize, target_size, current_time);
+            text.GetComponent<TextMeshProUGUI>().fontSize = new_size;
+            current_time += Time.deltaTime;
+            yield return null;
+        }
     }
 }

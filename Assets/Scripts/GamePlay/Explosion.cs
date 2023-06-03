@@ -37,6 +37,8 @@ public class Explosion : NetworkBehaviour
         _remainingTimeSegment = _durationSegment;
         _remainingTimeDuration = _duration;
 
+        StartCameraShake();
+
         if (!IsServer)
         {
             _type = (ExplosionType)_typeNetworked.Value;
@@ -133,5 +135,10 @@ public class Explosion : NetworkBehaviour
             GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>().RPC_SwitchToDeathMessageClientRPC(client_id);
             col.gameObject.GetComponent<PlayerController>().setAliveStatus(false);
         }
+    }
+
+    private void StartCameraShake()
+    {
+        Camera.main.GetComponent<CameraShake>().ShakeCamera();
     }
 }

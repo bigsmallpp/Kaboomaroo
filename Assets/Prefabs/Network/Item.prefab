@@ -103,9 +103,9 @@ MonoBehaviour:
   itemType: 0
   itemIcons:
   - {fileID: 21300000, guid: 881798b77426a8f47b533dcc4767e9e5, type: 3}
-  - {fileID: 21300000, guid: 7f424915993f4ce47ac872d0ab0ff938, type: 3}
+  - {fileID: 21300000, guid: 8cb477af895fb01489800f4dba79f4e1, type: 3}
   - {fileID: 21300000, guid: 826cb03138eed334c99c91f331ee263e, type: 3}
-  - {fileID: 21300000, guid: 2396e6f1016c2ea4d9ea4673fbed5ae5, type: 3}
+  - {fileID: 21300000, guid: cb39201766f118148a7a29afac9b8e13, type: 3}
 --- !u!61 &2180339077895132023
 BoxCollider2D:
   m_ObjectHideFlags: 0

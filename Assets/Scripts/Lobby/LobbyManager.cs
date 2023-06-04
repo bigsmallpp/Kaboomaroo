@@ -50,7 +50,11 @@ public class LobbyManager : MonoBehaviour
         "Amazing Ape",
         "Hectic Harald",
         "Risky Ralf",
-        "Revengeful Ronald"
+        "Revengeful Ronald",
+        "Careful Caty",
+        "Radeling Rudi",
+        "Ruthless Rita",
+        "Non-toxic Norbert"
     };
     private async void Start()
     {

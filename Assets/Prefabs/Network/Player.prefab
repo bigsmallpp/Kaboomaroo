@@ -89,10 +89,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  _alive: 0
   _colliding: 0
   _directionNetworked:
     m_InternalValue: {x: 0, y: 0}
   _bombRadius:
+    m_InternalValue: 1
+  skin_variant:
     m_InternalValue: 1
   _prefBomb: {fileID: 7704387215618436441, guid: 06ff19b1dc9d039478a34b7fe324ba75, type: 3}
 --- !u!114 &4828621810131853547
@@ -244,7 +247,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 457474356617978424, guid: 22cd15ec83fed3b4db95f16835a5416d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -288,6 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d0e4e1216ef0bf40b2edf13b2f929de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _skin_variant: 1
 --- !u!114 &1809875319347477869
 MonoBehaviour:
   m_ObjectHideFlags: 0

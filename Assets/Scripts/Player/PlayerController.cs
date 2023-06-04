@@ -226,7 +226,23 @@ public class PlayerController : NetworkBehaviour
         {
             _bombRadius.Value++;
         }
-        
+    }
+
+    public void increaseSpeedItem(bool used)
+    {
+        if (!used)
+        {
+            speed += 1.0f;
+        }
+    }
+
+    public void increaseBombLimitItem(bool used)
+    {
+        if (!used)
+        {
+            Debug.Log("Bomblimit Upgrade used");
+            //TODO: increase player bomb count limit
+        }
     }
 
     public void setSpeed(float new_speed)

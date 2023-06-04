@@ -16,7 +16,8 @@ public class MainMenuButtons : MonoBehaviour
     [SerializeField] private GameObject _optionsMenu;
     [SerializeField] private GameObject _lobbyScreen;
     [SerializeField] private GameObject _activeMenu;
-    
+    [SerializeField] private GameObject _title;
+
     [Header("The connecting screen")]
     [SerializeField] private GameObject _connectingToLobbyScreen;
     
@@ -55,12 +56,14 @@ public class MainMenuButtons : MonoBehaviour
     {
         _activeMenu.SetActive(false);
         _mainMenu.SetActive(true);
+        _title.SetActive(true);
         _activeMenu = _mainMenu;
     }
     
     public void SwitchToOptionsMenu()
     {
         _activeMenu.SetActive(false);
+        _title.SetActive(false);
         _optionsMenu.SetActive(true);
         _activeMenu = _optionsMenu;
     }
@@ -68,6 +71,7 @@ public class MainMenuButtons : MonoBehaviour
     public void SwitchToJoinLobbyMenu()
     {
         _activeMenu.SetActive(false);
+        _title.SetActive(false);
         _joinLobbyMenu.SetActive(true);
         _activeMenu = _joinLobbyMenu;
     }
@@ -75,6 +79,7 @@ public class MainMenuButtons : MonoBehaviour
     public void SwitchToCreateLobbyMenu()
     {
         _activeMenu.SetActive(false);
+        _title.SetActive(false);
         _createLobbyMenu.SetActive(true);
         _activeMenu = _createLobbyMenu;
     }
@@ -110,6 +115,7 @@ public class MainMenuButtons : MonoBehaviour
     private void SwitchToLobbyScreenInstant()
     {
         _activeMenu.SetActive(false);
+        _title.SetActive(false);
         _lobbyScreen.SetActive(true);
         _activeMenu = _lobbyScreen;
     }

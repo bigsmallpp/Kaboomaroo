@@ -50,15 +50,14 @@ public class Item : NetworkBehaviour
 
                 case ItemType.radiusUpgrade:
                     collision.gameObject.GetComponent<PlayerController>().increaseRadiusItem(_used);
-                    Debug.Log("Radius Upgrade used");
                     break;
 
                 case ItemType.bombLimitUpgrade:
-                    Debug.Log("Bomblimit Upgrade used");
+                    collision.gameObject.GetComponent<PlayerController>().increaseBombLimitItem(_used);
                     break;
 
                 case ItemType.speedUpgrade:
-                    Debug.Log("Speed Upgrade used");
+                    collision.gameObject.GetComponent<PlayerController>().increaseSpeedItem(_used);
                     break;
 
                 default:

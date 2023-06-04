@@ -89,7 +89,6 @@ public class ItemSpawner : NetworkBehaviour
     public Item.ItemType getRandomItemType()
     {
         randNum = Random.Range(1, 4);
-        Debug.Log("RandNum: " + randNum);
         Item.ItemType type;
         switch (randNum)
         {

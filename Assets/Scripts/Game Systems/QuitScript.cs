@@ -30,8 +30,7 @@ public class QuitScript : NetworkBehaviour
         // Load the LobbyScene
         SceneManager.LoadScene("SampleScene");
 
-        ulong clientID = NetworkManager.Singleton.LocalClientId;
-        NetworkManager.Singleton.DisconnectClient(clientID);
+        NetworkManager.Singleton.Shutdown();
         Debug.Log("Player Disconnected!");
 
     }

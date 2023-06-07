@@ -215,7 +215,8 @@ public class PlayerController : NetworkBehaviour
         SpawnBomb(owner_object, radius);
     }
 
-    public void killPlayer()
+    [ClientRpc]
+    public void killPlayerClientRpc()
     {
         animUpdater.animPlayerDead();
     }
@@ -244,9 +245,10 @@ public class PlayerController : NetworkBehaviour
             //TODO: increase player bomb count limit
         }
     }
-
-    public void setSpeed(float new_speed)
+    [ClientRpc]
+    public void setSpeedClientRpc(float new_speed)
     {
+        Debug.Log("Set speed client rpc");
         speed = new_speed;
         rigidbody_player.velocity = direction * speed;
     }

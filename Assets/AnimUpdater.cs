@@ -24,13 +24,13 @@ public class AnimUpdater : NetworkBehaviour
         switch (variant)
         {
             case 1:
-                anim.SetInteger("variant", 1);
+                anim.SetInteger("variant", 3);
                 break;
             case 2:
-                anim.SetInteger("variant", 2);
+                anim.SetInteger("variant", 1);//Swap to debug
                 break;
             case 3:
-                anim.SetInteger("variant", 3);
+                anim.SetInteger("variant", 2);
                 break;
             case 4:
                 anim.SetInteger("variant", 4);
@@ -46,7 +46,7 @@ public class AnimUpdater : NetworkBehaviour
         anim.SetBool("down", false);
         anim.SetBool("left", false);
         anim.SetBool("right", false);
-        //Debug.Log("[KEK] direction: " + curr_direction);
+        Debug.Log("[KEK] direction: " + curr_direction);
 
         switch (curr_direction)
         {
@@ -75,6 +75,7 @@ public class AnimUpdater : NetworkBehaviour
 
     public void animPlayerDead()
     {
+        Debug.Log("ANIM PLAYER DEAD CALLED");
         anim.SetBool("up", false);
         anim.SetBool("down", false);
         anim.SetBool("left", false);

@@ -7,11 +7,13 @@ public class Item : NetworkBehaviour
 {
     public int _id = 0;
     private ItemSpawner spawner;
+    private SFXPlayer sfx;
     private bool _used = false;
     void Start()
     {
         Debug.Log("Item spawned at: " + gameObject.transform.position);
         spawner = FindObjectOfType<ItemSpawner>();
+        sfx = FindObjectOfType<SFXPlayer>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -23,6 +25,7 @@ public class Item : NetworkBehaviour
         //Do item stuff
         if (collision.gameObject.CompareTag("Player"))
         {
+            sfx.CollectItem();
             collision.gameObject.GetComponent<PlayerController>().increaseRadiusItem(_used);
             _used = true;
             spawner.deleteItem(_id);

@@ -10,6 +10,8 @@ public class SFXPlayer : MonoBehaviour
     public AudioSource you_won;
     public AudioSource step;
     public AudioSource you_died;
+    public AudioSource place_bomb;
+    public AudioSource collect_item;
 
     public void PlayBomb()
     {
@@ -44,5 +46,15 @@ public class SFXPlayer : MonoBehaviour
     public void StopStep()
     {
         step.Stop();
+    }
+
+    public void PlaceBomb()
+    {
+        place_bomb.Play();
+    }
+
+    public void CollectItem()
+    {
+        collect_item.Play();
     }
 }

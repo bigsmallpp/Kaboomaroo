@@ -22,7 +22,7 @@ public class LobbyManager : MonoBehaviour
     public static LobbyManager Instance => _instance;
     
     private Lobby _connectedLobby;
-    
+
     [Header("Heartbeat Variables")]
     [SerializeField] private float _heartbeatElapsedTime = 0.0f;
     [SerializeField] private float _heartbeatInterval = 20.0f;

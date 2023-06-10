@@ -15,6 +15,7 @@ public class Item : NetworkBehaviour
 
     public int _id = 0;
     private ItemSpawner spawner;
+    private SFXPlayer sfx;
     private bool _used = false;
     public ItemType itemType;
     private SpriteRenderer spriteRenderer;
@@ -29,6 +30,7 @@ public class Item : NetworkBehaviour
     {
         Debug.Log("Item spawned at: " + gameObject.transform.position);
         spawner = FindObjectOfType<ItemSpawner>();
+        sfx = FindObjectOfType<SFXPlayer>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -49,14 +51,17 @@ public class Item : NetworkBehaviour
                     break;
 
                 case ItemType.radiusUpgrade:
+                    sfx.CollectItem();
                     collision.gameObject.GetComponent<PlayerController>().increaseRadiusItem(_used);
                     break;
 
                 case ItemType.bombLimitUpgrade:
+                    sfx.CollectItem();
                     collision.gameObject.GetComponent<PlayerController>().increaseBombLimitItem(_used);
                     break;
 
                 case ItemType.speedUpgrade:
+                    sfx.CollectItem();
                     collision.gameObject.GetComponent<PlayerController>().increaseSpeedItem(_used);
                     break;
 

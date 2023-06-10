@@ -156,6 +156,23 @@ public class PlayerSpawner : NetworkBehaviour
         }
     }
 
+    public void DespawnPlayer(ulong clientId)
+    {
+        Debug.LogError("Despawn Player Called");
+        Tuple<ulong, GameObject> playerTuple = _players.Find(player => player.Item1 == clientId);
+
+        if (playerTuple != null)
+        {
+            GameObject player = playerTuple.Item2;
+            _players.Remove(playerTuple);
+            player.GetComponent<PlayerController>().setAliveStatus(false);
+            player.GetComponent<NetworkObject>().Despawn();
+            Destroy(player);
+            Debug.Log("Despawned the player, which quitted!");
+        }
+        
+    }
+
     public override void OnNetworkDespawn()
     {
         Debug.LogError("ON NETWORK DESPAWN CALLED");

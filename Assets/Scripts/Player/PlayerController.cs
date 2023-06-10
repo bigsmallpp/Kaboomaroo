@@ -12,6 +12,9 @@ public class PlayerController : NetworkBehaviour
     public float speed = 3f;
     public bool _alive = false;
 
+    public UnityEventBool onMovementPerformed;
+    public UnityEventBool onMovementStopped;
+
     private CustomInput input = null;
     private Vector2 direction = Vector2.zero;
     
@@ -107,9 +110,12 @@ public class PlayerController : NetworkBehaviour
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
         direction = value.ReadValue<Vector2>();
-        
+
+        onMovementPerformed.Invoke(true);
+
         direction = direction.normalized;
         setCurrentDirection(direction);
+        
     }
 
     private void setCurrentDirection(Vector2 direction)
@@ -142,6 +148,7 @@ public class PlayerController : NetworkBehaviour
     {
         direction = Vector2.zero;
         curr_direction = Direction.Idle;
+        onMovementStopped.Invoke(true);
     }
    
     private void OnButtonPressed(InputAction.CallbackContext context) //Template for adding listener on buttons and actions
@@ -150,6 +157,7 @@ public class PlayerController : NetworkBehaviour
         {
             //Perform Trigger Pressed Actions
             Debug.Log("Escape Pressed");
+
         }
     }
     

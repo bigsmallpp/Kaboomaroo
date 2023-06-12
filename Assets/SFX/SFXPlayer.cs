@@ -115,11 +115,19 @@ public class SFXPlayer : MonoBehaviour
 
     public void Step()
     {
+        if (step.isPlaying)
+        {
+            return;
+        }
         step.Play();
     }
 
     public void StopStep()
     {
+        if (!step.isPlaying)
+        {
+            return;
+        }
         step.Stop();
     }
 

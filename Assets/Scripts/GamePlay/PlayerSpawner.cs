@@ -63,11 +63,14 @@ public class PlayerSpawner : NetworkBehaviour
     {
         ReduceTimerForPlayersToConnect();
 
-        if (_gameStarted)
-            CheckPlayerAliveStatus();
-        if (!_gameStarted && _gameFinished)
+        if (false) //FOR TEST GAMELOGIC
         {
-            StartCoroutine(returnAllPlayersToMenu());
+            if (_gameStarted)
+                CheckPlayerAliveStatus();
+            if (!_gameStarted && _gameFinished)
+            {
+                StartCoroutine(returnAllPlayersToMenu());
+            }
         }
     }
 

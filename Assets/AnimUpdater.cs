@@ -52,17 +52,22 @@ public class AnimUpdater : NetworkBehaviour
         {
             case PlayerController.Direction.Up:
                 anim.SetBool("up", true);
+                SFXPlayer.Instance.Step();
                 break;
             case PlayerController.Direction.Down:
                 anim.SetBool("down", true);
+                SFXPlayer.Instance.Step();
                 break;
             case PlayerController.Direction.Left:
                 anim.SetBool("left", true);
+                SFXPlayer.Instance.Step();
                 break;
             case PlayerController.Direction.Right:
                 anim.SetBool("right", true);
+                SFXPlayer.Instance.Step();
                 break;
             case PlayerController.Direction.Idle:
+                SFXPlayer.Instance.StopStep();
                 anim.SetBool("up", false);
                 anim.SetBool("down", false);
                 anim.SetBool("left", false);

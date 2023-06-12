@@ -4547,6 +4547,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1300894913}
   - component: {fileID: 1300894914}
+  - component: {fileID: 1300894915}
   m_Layer: 0
   m_Name: game_start_sound
   m_TagString: StartMusic
@@ -4580,8 +4581,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4969ff1504795674cabb843a94cce640, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4665,6 +4666,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1300894915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300894912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b7a14e9c8c0df4288ae5c7538a0171, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundSetting: 1
+  audioSource: {fileID: 0}
 --- !u!1 &1372292255
 GameObject:
   m_ObjectHideFlags: 0
@@ -4931,6 +4946,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1524871221}
   - component: {fileID: 1524871222}
+  - component: {fileID: 1524871223}
   m_Layer: 0
   m_Name: ingame_bg_sound
   m_TagString: BgIngameMusic
@@ -4964,7 +4980,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 554a71e5e33f163428ba04ab74278555, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.04
   m_Pitch: 1
   Loop: 1
@@ -5049,6 +5065,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1524871223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524871220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b7a14e9c8c0df4288ae5c7538a0171, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundSetting: 1
+  audioSource: {fileID: 0}
 --- !u!1 &1644009272
 GameObject:
   m_ObjectHideFlags: 0
@@ -5982,6 +6012,16 @@ MonoBehaviour:
   you_died: {fileID: 0}
   place_bomb: {fileID: 1372292257}
   collect_item: {fileID: 2005107681}
+  _bomb_sound_setting: 2
+  _button_click_sound_setting: 2
+  _you_won_sound_setting: 2
+  _step_sound_setting: 2
+  _you_died_sound_setting: 2
+  _place_bomb_sound_setting: 2
+  _collect_item_sound_setting: 2
+  _bg_music_menu_setting: 2
+  _bg_music_menu: {fileID: 0}
+  _bg_music_menu_script: {fileID: 0}
   sound_volume: 1
 --- !u!4 &1895272559
 Transform:

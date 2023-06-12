@@ -4549,7 +4549,7 @@ GameObject:
   - component: {fileID: 1300894914}
   m_Layer: 0
   m_Name: game_start_sound
-  m_TagString: Untagged
+  m_TagString: StartMusic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4933,7 +4933,7 @@ GameObject:
   - component: {fileID: 1524871222}
   m_Layer: 0
   m_Name: ingame_bg_sound
-  m_TagString: Untagged
+  m_TagString: BgIngameMusic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5982,6 +5982,7 @@ MonoBehaviour:
   you_died: {fileID: 0}
   place_bomb: {fileID: 1372292257}
   collect_item: {fileID: 2005107681}
+  sound_volume: 1
 --- !u!4 &1895272559
 Transform:
   m_ObjectHideFlags: 0

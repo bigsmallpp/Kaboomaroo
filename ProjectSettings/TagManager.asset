@@ -3,7 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - PlayerSpawner
+  - TileManager
+  - ItemSpawner
+  - NetworkedMenuManager
+  - TilesIndestructible
+  - TilesDestructible
+  - BgMenuMusic
+  - StartMusic
+  - BgIngameMusic
   layers:
   - Default
   - TransparentFX

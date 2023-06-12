@@ -3091,8 +3091,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: de86071c5bf7ee141bfb9b7f9e6129c3, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.08
+  m_Pitch: 1.5
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -5897,13 +5897,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bomb: {fileID: 691397104}
-  game_start: {fileID: 0}
   button_click: {fileID: 424275329}
   you_won: {fileID: 1755727949}
   step: {fileID: 94466214}
   you_died: {fileID: 1992001089}
   place_bomb: {fileID: 120198885}
   collect_item: {fileID: 395639574}
+  sound_volume: 1
 --- !u!4 &884312539
 Transform:
   m_ObjectHideFlags: 0
@@ -10505,7 +10505,7 @@ GameObject:
   - component: {fileID: 1735086148}
   m_Layer: 0
   m_Name: Background_Music
-  m_TagString: Untagged
+  m_TagString: BgMenuMusic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11238,6 +11238,7 @@ GameObject:
   - component: {fileID: 1787473000}
   - component: {fileID: 1787472999}
   - component: {fileID: 1787472998}
+  - component: {fileID: 1787473001}
   m_Layer: 5
   m_Name: Button Apply
   m_TagString: Untagged
@@ -11322,6 +11323,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1787473001}
+        m_TargetAssemblyTypeName: ButtonSound, Assembly-CSharp
+        m_MethodName: PlayButtonClickSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1787472999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11360,6 +11373,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1787472996}
   m_CullTransparentMesh: 1
+--- !u!114 &1787473001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787472996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4115aa179ebed4a4aa7fe459f6c82a61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1804190375
 GameObject:
   m_ObjectHideFlags: 0

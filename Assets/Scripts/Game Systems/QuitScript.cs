@@ -3,24 +3,11 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public class QuitScript : NetworkBehaviour
+public class QuitScript : MonoBehaviour
 {
-
-    // Reference to the LobbyManager singleton
-    private LobbyManager lobbyManager;
-
-    private NetworkClient networkClient;
-
-    private void Start()
-    {
-        // Get references to the singleton instances
-        lobbyManager = LobbyManager.Instance;
-    }
-
     public void PerformButtonAction()
     {
-
-
+        LobbyManager lobbyManager = LobbyManager.Instance;
         // Remove the player from the lobby
         if (lobbyManager != null)
         {

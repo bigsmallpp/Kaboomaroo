@@ -28,6 +28,7 @@ public class NetworkedGameMenus : NetworkBehaviour
             return;
         }
 
+        SFXPlayer.Instance.YouWon();
         onShowWinnerScreen.Invoke(true);
     }
 }

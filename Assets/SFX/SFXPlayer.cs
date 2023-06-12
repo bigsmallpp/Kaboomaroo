@@ -5,7 +5,7 @@ using UnityEngine;
 public class SFXPlayer : MonoBehaviour
 {
     public AudioSource bomb;
-    public AudioSource game_start;
+    //public AudioSource game_start;
     public AudioSource button_click;
     public AudioSource you_won;
     public AudioSource step;
@@ -13,15 +13,31 @@ public class SFXPlayer : MonoBehaviour
     public AudioSource place_bomb;
     public AudioSource collect_item;
 
+    private static SFXPlayer _player;
+    public static SFXPlayer Instance => _player;
+
+    void Start()
+    {
+        if (_player == null)
+        {
+            _player = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
     public void PlayBomb()
     {
         bomb.Play();
     }
 
-    public void PlayGameStart()
+    /*public void PlayGameStart()
     {
         game_start.Play();
-    }
+    }*/
 
     public void Click()
     {

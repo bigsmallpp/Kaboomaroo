@@ -109,6 +109,7 @@ public class PlayerController : NetworkBehaviour
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
+        SFXPlayer.Instance.Step();
         direction = value.ReadValue<Vector2>();
 
         onMovementPerformed.Invoke(true);
@@ -146,6 +147,7 @@ public class PlayerController : NetworkBehaviour
 
     private void OnMovementStopped(InputAction.CallbackContext value)
     {
+        SFXPlayer.Instance.StopStep();
         direction = Vector2.zero;
         curr_direction = Direction.Idle;
         onMovementStopped.Invoke(true);

@@ -21,6 +21,7 @@ public class Bomb : NetworkBehaviour
     
     public override void OnNetworkSpawn()
     {
+        SFXPlayer.Instance.PlaceBomb();
         if (IsServer)
         {
             _tileManager = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();

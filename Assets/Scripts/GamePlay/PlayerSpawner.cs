@@ -62,14 +62,12 @@ public class PlayerSpawner : NetworkBehaviour
     private void Update()
     {
         ReduceTimerForPlayersToConnect();
-        if (false)
+
+        if (_gameStarted)
+            CheckPlayerAliveStatus();
+        if (!_gameStarted && _gameFinished)
         {
-            if (_gameStarted)
-                CheckPlayerAliveStatus();
-            if (!_gameStarted && _gameFinished)
-            {
-                StartCoroutine(returnAllPlayersToMenu());
-            }
+            StartCoroutine(returnAllPlayersToMenu());
         }
     }
 

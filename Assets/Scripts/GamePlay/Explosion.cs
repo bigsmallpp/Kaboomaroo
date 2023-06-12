@@ -37,6 +37,7 @@ public class Explosion : NetworkBehaviour
         _remainingTimeSegment = _durationSegment;
         _remainingTimeDuration = _duration;
 
+        SFXPlayer.Instance.PlayBomb();
         StartCameraShake();
 
         if (!IsServer)
@@ -126,6 +127,7 @@ public class Explosion : NetworkBehaviour
         Debug.Log("Hit Player with ID " + col.gameObject.GetComponent<NetworkObject>().OwnerClientId);
         if (col.gameObject.CompareTag("Player"))
         {
+            SFXPlayer.Instance.YouDied();
             // TODO Give Player Hit Feedback
             col.gameObject.GetComponent<PlayerController>().DisableControls();
             col.gameObject.GetComponent<PlayerController>().killPlayerClientRpc();

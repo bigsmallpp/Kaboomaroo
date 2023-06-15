@@ -16,6 +16,9 @@ public class GameMenuManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _textYouDied;
     [SerializeField] private TextMeshProUGUI _textYouWon;
 
+    [Header("Unity Events")]
+    public UnityEvent onYouDied;
+
     private void SwitchToCountdown()
     {
         _textConnectedPlayers.text = "3.0";
@@ -65,6 +68,7 @@ public class GameMenuManager : MonoBehaviour
     public void SetDeathMessageActive(bool val)
     {
         _textYouDied.gameObject.SetActive(val);
+        onYouDied.Invoke();
         StartCoroutine(AnimatePostGameMessage(_textYouDied.gameObject));
     }
 

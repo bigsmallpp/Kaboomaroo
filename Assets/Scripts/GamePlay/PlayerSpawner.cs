@@ -35,6 +35,8 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField] private List<Tuple<ulong, GameObject>> _players = new List<Tuple<ulong, GameObject>>();
     [SerializeField] private List<Tuple<ulong, string>> _lobbyIDs = new List<Tuple<ulong, string>>();
 
+    [Header("HUD")]
+    [SerializeField] private HUDMenus _hudMenus;
     
     public override void OnNetworkSpawn()
     {
@@ -168,6 +170,7 @@ public class PlayerSpawner : NetworkBehaviour
             _players.Remove(playerTuple);
             player.GetComponent<PlayerController>().setAliveStatus(false);
             player.GetComponent<NetworkObject>().Despawn();
+
             Destroy(player);
             Debug.Log("Despawned the player, which quitted!");
         }

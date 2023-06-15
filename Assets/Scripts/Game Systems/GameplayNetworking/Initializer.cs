@@ -13,6 +13,8 @@ public class Initializer : MonoBehaviour
     [SerializeField] private NetworkedGameMenus _networkedMenuVariables;
     [SerializeField] private ItemSpawner _itemSpawner;
     [SerializeField] private ConnectionHandler _connectionHandler;
+    [SerializeField] private HUDMenus _hudMenus;
+
 
     [Header("Prefabs")]
     [SerializeField] private GameObject _prefPlayerSpawner;
@@ -34,6 +36,8 @@ public class Initializer : MonoBehaviour
             _gameMenuManager.InitializeConnectedPlayers(_playerSpawner);
             _gameMenuManager.InitializeInGameEvents(_networkedMenuVariables);
 
+            _hudMenus.GetComponent<HUDMenus>().InitializeConnectedPlayers(_playerSpawner);
+
             _tileManager = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();
             _itemSpawner = GameObject.FindWithTag("ItemSpawner").GetComponent<ItemSpawner>();
         }
@@ -44,6 +48,8 @@ public class Initializer : MonoBehaviour
             _playerSpawner = player_spawner.GetComponent<PlayerSpawner>();
             _gameMenuManager.GetComponent<GameMenuManager>().InitializePreGameEvents(_playerSpawner);
             player_spawner.GetComponent<NetworkObject>().Spawn();
+
+            _hudMenus.GetComponent<HUDMenus>().InitializeConnectedPlayers(_playerSpawner);
 
             GameObject item_spawner = Instantiate(_prefItemSpawner);
             _itemSpawner = item_spawner.GetComponent<ItemSpawner>();

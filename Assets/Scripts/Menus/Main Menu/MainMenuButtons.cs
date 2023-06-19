@@ -17,6 +17,7 @@ public class MainMenuButtons : MonoBehaviour
     [SerializeField] private GameObject _lobbyScreen;
     [SerializeField] private GameObject _activeMenu;
     [SerializeField] private GameObject _title;
+    [SerializeField] private GameObject _credits;
 
     [Header("The connecting screen")]
     [SerializeField] private GameObject _connectingToLobbyScreen;
@@ -67,7 +68,15 @@ public class MainMenuButtons : MonoBehaviour
         _optionsMenu.SetActive(true);
         _activeMenu = _optionsMenu;
     }
-    
+
+    public void SwitchToCreditsMenu()
+    {
+        _activeMenu.SetActive(false);
+        _title.SetActive(false);
+        _credits.SetActive(true);
+        _activeMenu = _credits;
+    }
+
     public void SwitchToJoinLobbyMenu()
     {
         _activeMenu.SetActive(false);
@@ -207,5 +216,11 @@ public class MainMenuButtons : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(5);
         _errorRetry.interactable = true;
+    }
+
+    public void openCreditsUrl()
+    {
+        string _url = "https://rentry.co/ee6zu/raw";
+        Application.OpenURL(_url);
     }
 }

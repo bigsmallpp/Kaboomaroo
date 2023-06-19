@@ -54,7 +54,8 @@ public class LobbyManager : MonoBehaviour
         "Careful Caty",
         "Radeling Rudi",
         "Ruthless Rita",
-        "Non-toxic Norbert"
+        "Non-toxic Norbert",
+        "Rolling Rainer"
     };
     private async void Start()
     {

@@ -3819,6 +3819,7 @@ MonoBehaviour:
   _timerForPlayersToConnect: 10
   _gameStarted: 0
   _gameFinished: 0
+  _winnersList: 
   _playersInLobby:
     m_InternalValue: 0
   _connectedPlayers:
@@ -7518,6 +7519,10 @@ MonoBehaviour:
     m_InternalValue: {x: 0, y: 0}
   _bombRadius:
     m_InternalValue: 1
+  _bombCount:
+    m_InternalValue: 2
+  _activeBombs:
+    m_InternalValue: 0
   skin_variant:
     m_InternalValue: 1
   _prefBomb: {fileID: 7704387215618436441, guid: 06ff19b1dc9d039478a34b7fe324ba75, type: 3}

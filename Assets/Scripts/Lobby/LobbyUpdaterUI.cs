@@ -15,12 +15,19 @@ public class LobbyUpdaterUI : MonoBehaviour
     [SerializeField] private GameObject _lobbyGridView;
     [SerializeField] private TextMeshProUGUI _lobbyCode;
     [SerializeField] private Button _buttonStartGame;
+    [SerializeField] private Button _buttonDecreaseRound;
+    [SerializeField] private Button _buttonIncreaseRound;
     [SerializeField] private List<Color> _playerColors;
+    public TMPro.TextMeshProUGUI textField;
 
     private const int LOBBY_CODE_LENGTH = 6;
 
     private void Start()
     {
+        if(GameSettings.Instance != null)
+        {
+            updateText();
+        }
         _lobbyPlayers = new Dictionary<string, GameObject>();
     }
 
@@ -112,12 +119,34 @@ public class LobbyUpdaterUI : MonoBehaviour
 
     public void StartGame()
     {
+        GameSettings.Instance.setGameMode();
         LobbyManager.Instance.StartGame();
     }
 
     private void UpdateStartGameButton(bool is_host)
     {
         _buttonStartGame.gameObject.SetActive(is_host);
+        _buttonDecreaseRound.gameObject.SetActive(is_host);
+        _buttonIncreaseRound.gameObject.SetActive(is_host);
+    }
+
+    private void updateText()
+    {
+        if (GameSettings.Instance.getRoundCount() == 1) textField.SetText("Rounds: 1");
+        if (GameSettings.Instance.getRoundCount() == 3) textField.SetText("Rounds: 3");
+        if (GameSettings.Instance.getRoundCount() == 5) textField.SetText("Rounds: 5");
+    }
+
+    public void increaseRound()
+    {
+        GameSettings.Instance.increaseRounds();
+        updateText();
+    }
+
+    public void decreaseRound()
+    {
+        GameSettings.Instance.decreaseRounds();
+        updateText();
     }
 
     public void DisableStartGameButton()

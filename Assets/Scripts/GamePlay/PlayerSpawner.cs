@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using Unity.Networking.Transport;
 using Unity.Services.Authentication;
@@ -37,7 +38,7 @@ public class PlayerSpawner : NetworkBehaviour
 
     [Header("HUD")]
     [SerializeField] private HUDMenus _hudMenus;
-    
+
     public override void OnNetworkSpawn()
     {
         Debug.LogError("ON NETWORK SPAWN CALLED");
@@ -232,11 +233,22 @@ public class PlayerSpawner : NetworkBehaviour
         {
             //ToDo: Show End Screen! Return to Lobby Screen after XX Seconds!
             lastManStanding.GetComponent<PlayerController>().DisableControls();
+            GameSettings.Instance.addToWinnersList(lastManStanding.GetComponent<NetworkObject>().OwnerClientId);
             Debug.Log("Last man Standing!");
-            Debug.Log("Player: " + lastManStanding.GetComponent<NetworkObject>().OwnerClientId + " won!");
+            Debug.Log("Player: " + lastManStanding.GetComponent<NetworkObject>().OwnerClientId + " won Round: " + GameSettings.Instance.getCurrRound() + "!\n");
+            if(GameSettings.Instance.getRoundCount() > GameSettings.Instance.getCurrRound())
+            {
+                //ToDo: Restart Scene
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            GameSettings.Instance.increaseCurrRound();
+            //ToDo: What happens if Draw [Player 1 wins 1 Round, Player 2 wins 1 and Player 3 wins 1 -> Sudden death? W/O Player 4 ?)
+
+            List<ulong> finalWinner = GameSettings.Instance.getFinalWinner();
+            //_winnersList.GroupBy(x => x).OrderByDescending(x => x.Count()).Select(x => x.Key).ToList(); 
             _gameFinished = true;
             _gameStarted = false;
-            GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>().RPC_SwitchToWinnerMessageClientRPC(lastManStanding.GetComponent<NetworkObject>().OwnerClientId);
+            GameObject.FindWithTag("NetworkedMenuManager").GetComponent<NetworkedGameMenus>().RPC_SwitchToWinnerMessageClientRPC(finalWinner[0]);
             //NetworkManager.Singleton.DisconnectClient(lastManStanding.GetComponent<NetworkObject>().OwnerClientId);
         }
     }

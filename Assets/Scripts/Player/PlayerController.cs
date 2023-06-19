@@ -32,6 +32,14 @@ public class PlayerController : NetworkBehaviour
                                                     NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [SerializeField]
+    private NetworkVariable<int> _bombCount = new NetworkVariable<int>(2,
+                                                NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    [SerializeField]
+    private NetworkVariable<int> _activeBombs = new NetworkVariable<int>(0,
+                                            NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    [SerializeField]
     public NetworkVariable<int> skin_variant = new NetworkVariable<int>(1);
 
     [Header("Bomb Prefab")]
@@ -197,11 +205,11 @@ public class PlayerController : NetworkBehaviour
     private void SpawnBomb(GameObject owner, int radius)
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(owner.transform.position, 0.5f);
-        if(colliders.Length > 0)
+        if (colliders.Length > 0)
         {
             foreach(Collider2D obj in colliders)
             {
-                if (obj.gameObject.TryGetComponent(out Bomb current_bomb))
+                if (obj.gameObject.TryGetComponent(out Bomb current_bomb) || owner.GetComponent<PlayerController>()._bombCount.Value <= owner.GetComponent<PlayerController>()._activeBombs.Value )
                 {
                     // Can't spawn a bomb on top of a bomb
                     return;
@@ -214,6 +222,12 @@ public class PlayerController : NetworkBehaviour
         bomb.GetComponent<Bomb>().SetOwner(owner);
         bomb.GetComponent<Bomb>().SetRadius(radius);
         bomb.GetComponent<NetworkObject>().Spawn();
+        owner.GetComponent<PlayerController>()._activeBombs.Value++;
+    }
+
+    public void DecreaseActiveBombs(GameObject owner)
+    {
+        owner.GetComponent<PlayerController>()._activeBombs.Value--;;
     }
 
     [ServerRpc]
@@ -250,7 +264,7 @@ public class PlayerController : NetworkBehaviour
         if (!used)
         {
             Debug.Log("Bomblimit Upgrade used");
-            //TODO: increase player bomb count limit
+            _bombCount.Value++;
         }
     }
     [ClientRpc]

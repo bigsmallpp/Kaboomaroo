@@ -12397,6 +12397,7 @@ MonoBehaviour:
   _errorScreen: {fileID: 1879213646}
   _errorRetry: {fileID: 2129330043}
   _connectionStatus: {fileID: 928281744}
+  goBackToFirstScene: 0
 --- !u!1 &1650041865
 GameObject:
   m_ObjectHideFlags: 0
@@ -13289,7 +13290,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6c7d4a8340a1a734c9740a8f749fa357, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.35
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -15389,7 +15390,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4b88bfcb691ad754caa4fc47e7bd3ed6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

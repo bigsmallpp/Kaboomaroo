@@ -69,7 +69,8 @@ public class SettingsHandler : MonoBehaviour
     private void ApplySettings(SettingsSerializable new_settings)
     {
         // TODO Adjust Volume in SoundManager
-        SFXPlayer.Instance.adjustSound(_currentSettings.volume);//TODO TEST
+        Debug.Log("[SOUND] Settings Handler: Sound Volume set to: " + _currentSettings.volume);
+        SFXPlayer.Instance.adjustSound(new_settings.volume);//TODO TEST
         Application.targetFrameRate = new_settings.frame_limit;
 
         Resolution max_res = Screen.resolutions[Screen.resolutions.Length - 1];

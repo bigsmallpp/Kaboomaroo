@@ -10,7 +10,17 @@ public class SoundScript : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        if (!isMenu)
+        if (!isMenu && SFXPlayer.Instance.sound_volume != 2.0f)
+        {
+            audioSource = GetComponent<AudioSource>();
+            soundSetting = audioSource.volume;
+            audioSource.volume = soundSetting * SFXPlayer.Instance.sound_volume;
+            audioSource.Play();
+        }
+    }
+    private void Update()
+    {
+        if (!isMenu && SFXPlayer.Instance.sound_volume != 2.0f)
         {
             audioSource = GetComponent<AudioSource>();
             soundSetting = audioSource.volume;
@@ -30,8 +40,8 @@ public class SoundScript : MonoBehaviour
 
     public void setSoundSetting()
     {
-        Debug.Log("Volume setting SFXPlayer: " + SFXPlayer.Instance.sound_volume);
+        Debug.Log("[SOUND] Volume setting SFXPlayer: " + SFXPlayer.Instance.sound_volume);
         audioSource.volume = soundSetting * SFXPlayer.Instance.sound_volume;
-        Debug.Log("New Volume: " + audioSource.volume);
+        Debug.Log("[SOUND] New Volume: " + audioSource.volume);
     }
 }

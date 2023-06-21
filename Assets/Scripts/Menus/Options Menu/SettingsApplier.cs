@@ -36,6 +36,7 @@ public class SettingsApplier : MonoBehaviour
         float resolution_scale_multiplier = ConvertResolutionScaleToFloat(_resolutionScale.options[_resolutionScale.value].text);
         int frame_limit = ConvertFPSLimitToInt(_frameLimit.options[_frameLimit.value].text);
         int volume = (int)_volume.value;
+        Debug.Log("[SOUND] Settings Applier: Sound Volume set to: " + volume);
         SFXPlayer.Instance.adjustSound(volume);
 
         SettingsSerializable new_settings = new SettingsSerializable(volume, resolution_scale_multiplier, camera_shake_multiplier, frame_limit);

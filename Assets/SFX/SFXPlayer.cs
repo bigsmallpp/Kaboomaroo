@@ -32,7 +32,7 @@ public class SFXPlayer : MonoBehaviour
     private static SFXPlayer _player;
     public static SFXPlayer Instance => _player;
 
-    public float sound_volume = 1.0f;
+    public float sound_volume = 2.0f;
     void Start()
     {
         if (_player == null)
@@ -145,6 +145,7 @@ public class SFXPlayer : MonoBehaviour
     {
         initSoundSettings();
         sound_volume = (float)new_volume / 100;
+        Debug.Log("[SOUND] SFX PLAYER: Sound Volume set to: " + sound_volume);
         bomb.volume = _bomb_sound_setting * sound_volume;
         button_click.volume = _button_click_sound_setting * sound_volume;
         you_won.volume = _you_won_sound_setting * sound_volume;

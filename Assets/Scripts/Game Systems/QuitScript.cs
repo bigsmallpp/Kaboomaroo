@@ -15,7 +15,7 @@ public class QuitScript : MonoBehaviour
         }
 
         // Load the LobbyScene
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("MainMenuDisconnect");
 
         NetworkManager.Singleton.Shutdown();
         Debug.Log("Player Disconnected!");

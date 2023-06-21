@@ -24,13 +24,13 @@ public class AnimUpdater : NetworkBehaviour
         switch (variant)
         {
             case 1:
-                anim.SetInteger("variant", 3);
+                anim.SetInteger("variant", 1);
                 break;
             case 2:
-                anim.SetInteger("variant", 1);//Swap to debug
+                anim.SetInteger("variant", 2);//Swap to debug
                 break;
             case 3:
-                anim.SetInteger("variant", 2);
+                anim.SetInteger("variant", 3);
                 break;
             case 4:
                 anim.SetInteger("variant", 4);

@@ -210,7 +210,10 @@ public class LobbyManager : MonoBehaviour
                     if (!_joinedGame)
                     {
                         Debug.Log("Update Lobby UI called");
-                        ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby, IsHost());
+                        if (ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().isActiveAndEnabled)
+                        {
+                            ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby, IsHost());
+                        }
                     }
                     
                     SendPlayerheartbeat();

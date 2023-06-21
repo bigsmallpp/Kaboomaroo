@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class MainMenuButtons : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class MainMenuButtons : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _connectionStatus;
     
     private CustomInput _input;
+    public bool goBackToFirstScene = false;
     
     public enum CONNECTION_STATUS
     {
@@ -55,10 +57,26 @@ public class MainMenuButtons : MonoBehaviour
 
     public void SwitchToMainMenu()
     {
-        _activeMenu.SetActive(false);
-        _mainMenu.SetActive(true);
-        _title.SetActive(true);
-        _activeMenu = _mainMenu;
+        int check = SceneManager.GetActiveScene().name.CompareTo("MainMenuDisconnect");
+        if (check != 0)
+        {
+            _activeMenu.SetActive(false);
+            _mainMenu.SetActive(true);
+            _title.SetActive(true);
+            _activeMenu = _mainMenu;
+        }
+        else
+        {
+            // GameObject.Destroy(LobbyManager.Instance.gameObject);
+            //GameObject.Destroy(GameSettings.Instance.gameObject);
+            //GameObject.Destroy(ManagerSystems.Instance.gameObject);
+            //GameObject.Destroy(SettingsHandler.Instance.gameObject);
+            //GameObject.Destroy(SFXPlayer.Instance.gameObject);
+            //Networkmanager?
+            NetworkManager.Singleton.Shutdown();
+            SceneManager.LoadScene("SampleScene");
+        }
+
     }
     
     public void SwitchToOptionsMenu()

@@ -7993,7 +7993,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _menuButtons: {fileID: 1622092734}
-  _lobbyUpdaterUI: {fileID: 2145438045}
+  _lobbyUpdaterUI: {fileID: 577815470}
   _ipText: {fileID: 928281744}
 --- !u!1 &1315354386
 GameObject:
@@ -9281,6 +9281,7 @@ MonoBehaviour:
   _errorScreen: {fileID: 1051479136}
   _errorRetry: {fileID: 1631763405}
   _connectionStatus: {fileID: 928281744}
+  goBackToFirstScene: 0
 --- !u!1 &1627610786
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,8 +2,8 @@
     "m_SelectedDeviceId": "e3cc6614",
     "m_SelectedPackage": {
         "deviceId": "e3cc6614",
-        "name": "com.DefaultCompany.com.unity.template.mobile2D",
-        "processId": 3860,
+        "name": "com.DefaultCompany.Kaboomaroo",
+        "processId": 16025,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -282,6 +282,18 @@
             "deviceId": "e3cc6614",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
             "processId": 3860,
+            "exited": false
+        },
+        {
+            "deviceId": "e3cc6614",
+            "name": "com.DefaultCompany.Kaboomaroo",
+            "processId": 16024,
+            "exited": false
+        },
+        {
+            "deviceId": "e3cc6614",
+            "name": "com.DefaultCompany.Kaboomaroo",
+            "processId": 16025,
             "exited": false
         }
     ],

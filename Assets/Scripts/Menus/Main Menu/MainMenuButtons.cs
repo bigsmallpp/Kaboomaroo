@@ -223,7 +223,7 @@ public class MainMenuButtons : MonoBehaviour
 
     public void openCreditsUrl()
     {
-        string _url = "https://rentry.co/ee6zu/raw";
+        string _url = "https://rentry.co/ee6zu/";
         Application.OpenURL(_url);
     }
 }

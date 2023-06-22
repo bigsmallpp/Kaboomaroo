@@ -2661,7 +2661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8784314, g: 0.84313726, b: 0.7882353, a: 1}
+  m_Color: {r: 0.9254902, g: 0.9098039, b: 0.8862745, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7365,8 +7365,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Sounds:\nFreesounds.org\n\nSprites:\nBomberman Sprites from\nzigurous
-    github project\n\nTool for creating all other \nsprites used:\nAsprite"
+  m_text: "Team 21\r\nDominik Bauer\r\nDaniel Hevesy-Szettyan\r\nDominik Homer\r\nSebastian
+    Weninger\n\nSounds:\nFreesounds.org\n\nSprites:\nBomberman Sprites from\nzigurous
+    github project\n\nTool for creating all other \nsprites used:\nAsprite\n\nFont:
+    PressStart2P\n\nIcon: selfmade"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 065e64452f4d56b4c92e38dec8a52d4c, type: 2}
   m_sharedMaterial: {fileID: -628910122705824240, guid: 065e64452f4d56b4c92e38dec8a52d4c, type: 2}
@@ -8793,7 +8795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8784314, g: 0.84313726, b: 0.7882353, a: 1}
+  m_Color: {r: 0.9254902, g: 0.9098039, b: 0.8862745, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13756,7 +13758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8784314, g: 0.84313726, b: 0.7882353, a: 1}
+  m_Color: {r: 0.9254902, g: 0.9098039, b: 0.8862745, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

@@ -39,6 +39,7 @@ public class ConnectionHandler : MonoBehaviour
             // Cleanup for Host and Client
             NetworkManager.Singleton.Shutdown();
             LobbyManager.Instance.InvalidateLobby();
+            Debug.LogError("HandleClientDisconnect");
             SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
             return;
         }

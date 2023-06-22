@@ -35,9 +35,11 @@ public class PlayerController : NetworkBehaviour
     private NetworkVariable<int> _bombCount = new NetworkVariable<int>(2,
                                                 NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-    [SerializeField]
-    private NetworkVariable<int> _activeBombs = new NetworkVariable<int>(0,
-                                            NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    //[SerializeField]
+    //private NetworkVariable<int> _activeBombs = new NetworkVariable<int>(0,
+    //                                        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    private int _activeBombs = 0;
 
     [SerializeField]
     public NetworkVariable<int> skin_variant = new NetworkVariable<int>(1);
@@ -46,6 +48,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameObject _prefBomb;
 
     private AnimUpdater animUpdater;
+
+    public BombCountScript bombCountScript;
 
     public enum Direction
     {
@@ -66,6 +70,7 @@ public class PlayerController : NetworkBehaviour
         input.Player.Movement.canceled += OnMovementStopped;
         input.Player.Actions.performed += PlantBomb;
         animUpdater = GetComponentInChildren<AnimUpdater>();
+        initBombCountScriptObject();
     }
     private void FixedUpdate()
     {
@@ -85,6 +90,14 @@ public class PlayerController : NetworkBehaviour
         if(IsOwner)
         {
             animUpdater.updateAnim(curr_direction);
+            if (bombCountScript == null)
+            {
+                initBombCountScriptObject();
+            }
+            else
+            {
+                bombCountScript.UpdateBombCount(_bombCount.Value - _activeBombs);
+            }
         }
         
     }
@@ -209,7 +222,7 @@ public class PlayerController : NetworkBehaviour
         {
             foreach(Collider2D obj in colliders)
             {
-                if (obj.gameObject.TryGetComponent(out Bomb current_bomb) || owner.GetComponent<PlayerController>()._bombCount.Value <= owner.GetComponent<PlayerController>()._activeBombs.Value )
+                if (obj.gameObject.TryGetComponent(out Bomb current_bomb) || owner.GetComponent<PlayerController>()._bombCount.Value <= owner.GetComponent<PlayerController>()._activeBombs )
                 {
                     // Can't spawn a bomb on top of a bomb
                     return;
@@ -222,12 +235,13 @@ public class PlayerController : NetworkBehaviour
         bomb.GetComponent<Bomb>().SetOwner(owner);
         bomb.GetComponent<Bomb>().SetRadius(radius);
         bomb.GetComponent<NetworkObject>().Spawn();
-        owner.GetComponent<PlayerController>()._activeBombs.Value++;
+        owner.GetComponent<PlayerController>()._activeBombs++;
     }
 
     public void DecreaseActiveBombs(GameObject owner)
     {
-        owner.GetComponent<PlayerController>()._activeBombs.Value--;;
+        this.GetComponent<PlayerController>()._activeBombs--;
+        //owner.GetComponent<PlayerController>()._activeBombs.Value--;
     }
 
     [ServerRpc]
@@ -293,6 +307,11 @@ public class PlayerController : NetworkBehaviour
         // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         NetworkManager.Singleton.Shutdown();
         SceneManager.LoadScene("MainMenuDisconnect", LoadSceneMode.Single);
+    }
+
+    private void initBombCountScriptObject()
+    {
+        bombCountScript = GameObject.FindObjectOfType<BombCountScript>();
     }
 }
     

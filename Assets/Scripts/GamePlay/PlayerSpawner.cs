@@ -32,6 +32,8 @@ public class PlayerSpawner : NetworkBehaviour
     public UnityEventFloat onCountdownTickDown;
     public UnityEvent onCountdownOver;
 
+    public int active_player_count = 0;
+
     [Header("The Players")]
     [SerializeField] private List<Tuple<ulong, GameObject>> _players = new List<Tuple<ulong, GameObject>>();
     [SerializeField] private List<Tuple<ulong, string>> _lobbyIDs = new List<Tuple<ulong, string>>();
@@ -66,7 +68,12 @@ public class PlayerSpawner : NetworkBehaviour
     {
         ReduceTimerForPlayersToConnect();
 
-  
+        if (_gameStarted)
+            CheckPlayerAliveStatus();
+        if (!_gameStarted && _gameFinished)
+        {
+            StartCoroutine(returnAllPlayersToMenu());
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -224,7 +231,8 @@ public class PlayerSpawner : NetworkBehaviour
                 lastManStanding = player.Item2.gameObject;
             }
         }
-        if(count == 1)
+        active_player_count = count;
+        if (count == 1)
         {
             //ToDo: Show End Screen! Return to Lobby Screen after XX Seconds!
             lastManStanding.GetComponent<PlayerController>().DisableControls();

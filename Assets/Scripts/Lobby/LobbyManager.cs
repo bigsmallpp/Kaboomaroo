@@ -413,6 +413,7 @@ public class LobbyManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("LobbyException NetworkError");
                 SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
             }
         }

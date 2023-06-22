@@ -100,6 +100,7 @@ public class Bomb : NetworkBehaviour
         }
         
         SpawnExplosions(pos, hit_fields);
+
         _owner.GetComponent<PlayerController>().DecreaseActiveBombs(_owner);
         GetComponent<NetworkObject>().Despawn();
     }

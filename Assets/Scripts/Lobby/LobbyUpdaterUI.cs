@@ -18,6 +18,8 @@ public class LobbyUpdaterUI : MonoBehaviour
     [SerializeField] private Button _buttonDecreaseRound;
     [SerializeField] private Button _buttonIncreaseRound;
     [SerializeField] private List<Color> _playerColors;
+    [SerializeField] private TextMeshProUGUI _lobbyName;
+    [SerializeField] private TextMeshProUGUI _playerCount;
     public TMPro.TextMeshProUGUI textField;
 
     private const int LOBBY_CODE_LENGTH = 6;
@@ -96,14 +98,24 @@ public class LobbyUpdaterUI : MonoBehaviour
     private void UpdatePlayerIndices(List<Player> players)
     {
         int index = 1;
+        string host_name = string.Empty;
 
         Debug.Log(_lobbyPlayers.Count);
         foreach (Player player in players)
         {
             _lobbyPlayers[player.Id].GetComponentInChildren<TextMeshProUGUI>().text = "P" + index.ToString();
             _lobbyPlayers[player.Id].GetComponentInChildren<RawImage>().color = _playerColors[index - 1];
+
+            if(index == 1)
+            {
+                host_name = _lobbyPlayers[player.Id].GetComponentsInChildren<TextMeshProUGUI>()[1].text;
+                _lobbyName.text = host_name.Replace(" (You)", "") + "'s Cool Lobby";
+            }
+
             index++;
         }
+
+        _playerCount.text = _lobbyPlayers.Count.ToString() + "/4";
     }
 
     private void SetLobbyCode(string code)

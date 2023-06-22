@@ -5102,8 +5102,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -450, y: 300}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -50, y: 300}
+  m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &520889509
 MonoBehaviour:
@@ -16536,4 +16536,6 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 0.22891665, b: 1, a: 1}
+  _lobbyName: {fileID: 520889509}
+  _playerCount: {fileID: 30246290}
   textField: {fileID: 1263766371}

@@ -24,7 +24,7 @@ public class HUDMenus : MonoBehaviour
         }
         else
         {
-            UpdateAlivePlayerCount(spawner.active_player_count);
+            UpdateAlivePlayerCount(spawner.active_player_count.Value);
         } 
     }
 
@@ -47,5 +47,4 @@ public class HUDMenus : MonoBehaviour
     {
         _textConnectedPlayers.text = "Players alive: " + players.ToString();
     }
-
 }

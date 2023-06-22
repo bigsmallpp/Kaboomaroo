@@ -49,6 +49,10 @@ public class MainMenuButtons : MonoBehaviour
 
     private void Start()
     {
+        if (LobbyManager.Instance != null && AuthenticationService.Instance.IsSignedIn)
+        {
+            ManagerSystems.Instance.GetMenuManager().GetMainMenuButtons().SetStatusText(MainMenuButtons.CONNECTION_STATUS.CONNECTED);
+        }
     }
 
     private void Update()

@@ -22,7 +22,7 @@ public class SettingsSerializable
     // Default Settings
     public SettingsSerializable()
     {
-        volume = 20;
+        volume = 80;
         screen_resolution = 1.0f;
         camera_shake = 1.0f;
         frame_limit = 200;

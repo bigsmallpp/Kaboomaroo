@@ -36,6 +36,10 @@ public class ConnectionHandler : MonoBehaviour
         // Client -> Host dc'd
         if (!_isServer && (clientID == _playerSpawner._hostID.Value || _playerSpawner._hostID.Value == 0))
         {
+            if (_playerSpawner._plannedShutdown.Value == true)
+            {
+                return;
+            }
             // Cleanup for Host and Client
             NetworkManager.Singleton.Shutdown();
             LobbyManager.Instance.InvalidateLobby();

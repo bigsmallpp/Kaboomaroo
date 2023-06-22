@@ -25,6 +25,7 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField] private NetworkVariable<int> _connectedPlayers = new NetworkVariable<int>();
     [SerializeField] private NetworkVariable<float> _countdown = new NetworkVariable<float>(3.0f);
     [SerializeField] public NetworkVariable<ulong> _hostID = new NetworkVariable<ulong>(0);
+    [SerializeField] public NetworkVariable<bool> _plannedShutdown = new NetworkVariable<bool>(false);
 
     [Header("Unity Events")]
     public UnityEvent onAllPlayersConnected;
@@ -32,7 +33,7 @@ public class PlayerSpawner : NetworkBehaviour
     public UnityEventFloat onCountdownTickDown;
     public UnityEvent onCountdownOver;
 
-    public int active_player_count = 0;
+    [SerializeField] public NetworkVariable<int> active_player_count = new NetworkVariable<int>(0);
 
     [Header("The Players")]
     [SerializeField] private List<Tuple<ulong, GameObject>> _players = new List<Tuple<ulong, GameObject>>();
@@ -231,7 +232,10 @@ public class PlayerSpawner : NetworkBehaviour
                 lastManStanding = player.Item2.gameObject;
             }
         }
-        active_player_count = count;
+        if (IsServer)
+        {
+            active_player_count.Value = count;
+        }
         if (count == 1)
         {
             //ToDo: Show End Screen! Return to Lobby Screen after XX Seconds!
@@ -258,6 +262,7 @@ public class PlayerSpawner : NetworkBehaviour
 
     private IEnumerator returnAllPlayersToMenu()
     {
+        _plannedShutdown.Value = true;
         yield return new WaitForSecondsRealtime(3);
         foreach(var player in _players)
         {

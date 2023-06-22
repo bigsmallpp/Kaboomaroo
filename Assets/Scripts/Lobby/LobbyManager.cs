@@ -66,6 +66,9 @@ public class LobbyManager : MonoBehaviour
             return;
         }
 
+        //Disable Debugs
+        Debug.unityLogger.logEnabled = false;
+
         _instance = this;
         DontDestroyOnLoad(this);
         await UnityServices.InitializeAsync();
@@ -210,7 +213,8 @@ public class LobbyManager : MonoBehaviour
                     if (!_joinedGame)
                     {
                         Debug.Log("Update Lobby UI called");
-                        if (ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().isActiveAndEnabled)
+                        if (ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI() != null && 
+                            ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().isActiveAndEnabled)
                         {
                             ManagerSystems.Instance.GetMenuManager().GetLobbyUpdaterUI().UpdateLobbydata(_connectedLobby, IsHost());
                         }

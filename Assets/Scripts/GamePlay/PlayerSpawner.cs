@@ -66,12 +66,7 @@ public class PlayerSpawner : NetworkBehaviour
     {
         ReduceTimerForPlayersToConnect();
 
-        if (_gameStarted)
-            CheckPlayerAliveStatus();
-        if (!_gameStarted && _gameFinished)
-        {
-            StartCoroutine(returnAllPlayersToMenu());
-        }
+  
     }
 
     [ServerRpc(RequireOwnership = false)]
